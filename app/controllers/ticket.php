@@ -2,27 +2,23 @@
 
 class ticket extends BaseController
 {
+    // ✅ Voeg deze regel toe en kies de juiste zichtbaarheid
+    private $ticketModel;   // of: protected $ticketModel;
 
-    public function index($firstname = NULL, $infix = NULL, $lastname = NULL)
+    public function __construct()
     {
-        /**
-         * Het $data-array geeft informatie mee aan de view-pagina
-         */
-
-
-        $data = [
-            'title' => 'Ticket overzicht',
-        ];
-
-        /**
-         * Met de view-method uit de BaseController-class wordt de view
-         * aangeroepen met de informatie uit het $data-array
-         */
-        $this->view('ticket/index', $data);
+        $this->ticketModel = $this->model('ticketModel');
     }
 
-    /**
-     * De optellen-method berekent de som van twee getallen
-     * We gebruiken deze method voor een unittest
-     */
+    public function index()
+    {
+        $result = $this->ticketModel->getAllticket();
+
+        $data = [
+            'title'  => 'Overzicht ticket',
+            'ticket' => $result
+        ];
+
+        $this->view('ticket/index', $data);
+    }
 }
