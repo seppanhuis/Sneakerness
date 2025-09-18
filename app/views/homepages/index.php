@@ -1,21 +1,15 @@
 <?php require_once APPROOT . '/views/includes/header.php'; ?>
 
 <!-- Voor het centreren van de container gebruiken we het boorstrap grid -->
-<div class="container">
-    <div class="row mt-3">
+ <section class="banner">
+  <video autoplay muted loop playsinline class="banner-video">
+    <source src="<?= URLROOT; ?>/public/img/banner.mp4" type="video/mp4" />
+    Je browser ondersteunt geen video-element.
+  </video>
+  <div class="banner-content">
+    <h1>Sneakerness</h1>
+  </div>
+</section>
 
-        <div class="col-2"></div>
-
-        <div class="col-8">
-
-            <h3><?php echo $data['title']; ?></h3>
-
-        </div>
-        
-        <div class="col-2"></div>
-        
-    </div>
-
-</div>
 
 <?php require_once APPROOT . '/views/includes/footer.php'; ?>
