@@ -8,7 +8,6 @@
   </video>
   <div class="banner-content">
     <h1>Sneakerness</h1>
-    <a href="<?= URLROOT; ?>/ContactPersoon/index" class="btn btn-primary">ContactPersonen</a>
   </div>
 </section>
 
