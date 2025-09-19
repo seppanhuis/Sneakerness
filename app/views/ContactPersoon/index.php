@@ -1,51 +1,55 @@
 <?php require_once APPROOT . '/views/includes/header.php'; ?>
 
-<div class="container mt-3">
+<div class="container extra mt-3">
 
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
+            <!-- Titel van de pagina -->
             <h3><?= $data['title']; ?></h3>
         </div>
         <div class="col-1"></div>
     </div>
-    <div class="row mb-2">
-        <div class="col-1"></div>
-        <div class="col-10">
-        <!-- <a href="<?= URLROOT; ?>/Zanger/create/" type="button" class="btn btn-primary btn-sm" role="button">Nieuwe Zangerres</a> -->
-        </div>
-        <div class="col-1"></div>
-    </div>
-    
-
 
    
-    <!-- begin tabel smartphones -->
+
+    <!-- begin tabel tickets -->
     <div class="row">
-        <!-- <div class="col-1"></div> -->
-        <div class="col-12">
+        <div class="col-1"></div>
+        <div class="col-10" style="overflow-x:auto;">
             <table class="table table-striped table-hover">
-               <thead>
+                <thead>
                     <tr>
-                        <th scope="col">Naam</th>
-                        <th scope="col">Telefoonnummer</th>
-                        <th scope="col">Emailadres</th>
+                        <th scope="col">AantalTickets</th>
+                        <th scope="col">Datum</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($data['ContactPersonen'] as $CP) : ?>
+                    <?php if (empty($data['ContactPersonen'])) : ?>
                         <tr>
-                            <td><?= $CP->Naam; ?></td>
-                            <td><?= $CP->Telefoonnummer; ?></td>
-                            <td><?= $CP->Emailadres; ?></td>
+                            <td colspan="7" class="text-center fw-bold">Geen contactpersonen gevonden</td>
                         </tr>
-                    <?php endforeach; ?>
-                </tbody>      
+                    <?php else : ?>
+                        <?php foreach ($data['ContactPersonen'] as $contactpersoon) : ?>
+                            <tr>
+                                <td><?= $contactpersoon->Naam; ?></td>
+                                <td><?= $contactpersoon->Telefoonnummer; ?></td>
+                                <td><?= $contactpersoon->Emailadres; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        
+                    <?php endif; ?>
+                </tbody>
             </table>
-            <a href="<?= URLROOT; ?>">Terug</a> 
+            
         </div>
-        <!-- <div class="col-1"></div> -->
+        <div class="col-1"></div>
     </div>
-    <!-- einde tabel smartphones -->
+    <!-- einde tabel tickets -->
 
-<?php require_once APPROOT . '/views/includes/footer.php'; ?> 
+
+    <script>
+        
+    </script>
+
+<?php require_once APPROOT . '/views/includes/footer.php'; ?>

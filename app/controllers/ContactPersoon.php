@@ -12,6 +12,7 @@ class ContactPersoon extends BaseController
 
     public function index()
     {
+        try {
         $result = $this->ContactPersoon->GetAllContactPersonen();
         
         $data = [
@@ -20,5 +21,8 @@ class ContactPersoon extends BaseController
         ];
 
         $this->view('ContactPersoon/index', $data);
+        } catch (Exception $e) {
+            error_log($e->getMessage());
+        }
     }
 }
