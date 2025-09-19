@@ -29,17 +29,23 @@
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($data['Verkopers'] as $Verkoper) : ?>
-                        <tr>
-                            <td><?= $Verkoper->Naam;  ?></td>
-                            <td><?= $Verkoper->SpecialeStatus; ?></td>
-                            <td><?= $Verkoper->VerkooptSoort; ?></td>
-                            <td><?= $Verkoper->StandType; ?></td>
-                            <td><?= $Verkoper->Dagen; ?></td>
-                            <td><?= $Verkoper->Logo; ?></td>
-
+                     <?php if (empty($data['Verkopers'])) : ?>
+                    <tr>
+                            <td colspan="7" class="text-center fw-bold">Geen Verkopers gevonden</td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php else : ?>
+                        <?php foreach ($data['Verkopers'] as $verkoper) : ?>
+                         <tr>
+                                <td><?= $verkoper->Naam; ?></td>
+                                <td><?= $verkoper->SpecialeStatus; ?></td>
+                                <td><?= $verkoper->VerkooptSoort; ?></td>
+                                <td><?= $verkoper->StandType; ?></td>
+                                <td><?= $verkoper->Dagen; ?></td>
+                                <td><?= $verkoper->Logo; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        
+                    <?php endif; ?>
                 </tbody>
             </table>
            
