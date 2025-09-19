@@ -1,21 +1,54 @@
 <?php require_once APPROOT . '/views/includes/header.php'; ?>
 
-<!-- Voor het centreren van de container gebruiken we het boorstrap grid -->
-<div class="container">
-    <div class="row mt-3">
+<div class="container extra mt-3">
 
-        <div class="col-2"></div>
-
-        <div class="col-8">
-
-            <h3><?php echo $data['title']; ?></h3>
-
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10">
+            <!-- Titel van de pagina -->
+            <h3><?= $data['title']; ?></h3>
         </div>
-        
-        <div class="col-2"></div>
-        
+        <div class="col-1"></div>
     </div>
 
-</div>
+   
+
+    <!-- begin tabel tickets -->
+    <div class="row">
+        <div class="col-1"></div>
+        <div class="col-10" style="overflow-x:auto;">
+            <table class="table table-striped table-hover">
+                <thead>
+                    <tr>
+                        <th scope="col">AantalTickets</th>
+                        <th scope="col">Datum</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <?php if (empty($data['ticket'])) : ?>
+                        <tr>
+                            <td colspan="7" class="text-center fw-bold">Geen tickets gevonden</td>
+                        </tr>
+                    <?php else : ?>
+                        <?php foreach ($data['ticket'] as $ticket) : ?>
+                            <tr>
+                                <td><?= $ticket->AantalTickets; ?></td>
+                                <td><?= $ticket->Datum; ?></td>
+                            </tr>
+                        <?php endforeach; ?>
+                        
+                    <?php endif; ?>
+                </tbody>
+            </table>
+            
+        </div>
+        <div class="col-1"></div>
+    </div>
+    <!-- einde tabel tickets -->
+
+
+    <script>
+        
+    </script>
 
 <?php require_once APPROOT . '/views/includes/footer.php'; ?>
