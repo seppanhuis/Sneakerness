@@ -1,4 +1,5 @@
 -- Create database
+DROP DATABASE IF EXISTS `Sneakerness`;
 CREATE DATABASE IF NOT EXISTS `Sneakerness` CHARACTER
 SET
     = utf8mb4 COLLATE = utf8mb4_unicode_ci;
@@ -26,8 +27,8 @@ CREATE TABLE
         ,Emailadres VARCHAR(255) UNIQUE NOT NULL
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
-        ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)CURRENT_TIMESTAMP
+    ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- Tabel: Evenement
@@ -41,8 +42,8 @@ CREATE TABLE
         ,BeschikbareStands INT NOT NULL DEFAULT 0
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
-        ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)CURRENT_TIMESTAMP
+    ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- Tabel: Prijs
@@ -55,8 +56,8 @@ CREATE TABLE
         ,Tarief DECIMAL(10, 2) NOT NULL
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
-        ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)CURRENT_TIMESTAMP
+    ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
         ,FOREIGN KEY (EvenementId) REFERENCES Evenement (Id) ON DELETE CASCADE
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
@@ -71,8 +72,8 @@ CREATE TABLE
         ,Datum DATE NOT NULL
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
-        ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)CURRENT_TIMESTAMP
+    ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
         ,FOREIGN KEY (BezoekerId) REFERENCES Bezoeker (Id) ON DELETE CASCADE
         ,FOREIGN KEY (EvenementId) REFERENCES Evenement (Id) ON DELETE CASCADE
         ,FOREIGN KEY (PrijsId) REFERENCES Prijs (Id) ON DELETE RESTRICT
@@ -90,8 +91,8 @@ CREATE TABLE
         ,Logo VARCHAR(255)
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
-        ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)CURRENT_TIMESTAMP
+    ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- Tabel: Stand
@@ -104,8 +105,8 @@ CREATE TABLE
         ,VerhuurdStatus BOOLEAN NOT NULL DEFAULT FALSE
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
-        ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)CURRENT_TIMESTAMP
+    ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
         ,FOREIGN KEY (VerkoperId) REFERENCES Verkoper (Id) ON DELETE CASCADE
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
@@ -118,8 +119,8 @@ CREATE TABLE
         ,Emailadres VARCHAR(255)
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
-        ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)CURRENT_TIMESTAMP
+    ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+    ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
 -- Koppeltabel: ContactPerVerkoper
@@ -131,7 +132,7 @@ CREATE TABLE
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
         ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)CURRENT_TIMESTAMP
+        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
         ,FOREIGN KEY (VerkoperId) REFERENCES Verkoper (Id) ON DELETE CASCADE
         ,FOREIGN KEY (ContactpersoonId) REFERENCES Contactpersoon (Id) ON DELETE CASCADE
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
