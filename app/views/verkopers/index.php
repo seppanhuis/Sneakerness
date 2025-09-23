@@ -42,6 +42,10 @@
                                 <td><?= $verkoper->StandType; ?></td>
                                 <td><?= $verkoper->Dagen; ?></td>
                                 <td><?= $verkoper->Logo; ?></td>
+
+
+
+
                             </tr>
                         <?php endforeach; ?>
                         
