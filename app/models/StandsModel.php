@@ -8,18 +8,21 @@ class StandsModel{
     }
 
     public function GetAllStands() {
-        $sql = 'SELECT 
-                Id
-                ,Naam 
-                ,Locatie 
-                ,Capaciteit 
-                ,Prijs
-                FROM Stand
-                ORDER BY Id ASC
-                LIMIT 10;
-                FROM Stand as S
-                ORDER BY S.Id ASC
-                LIMIT 10;
+        $sql = 'SELECT
+                v.Naam
+                ,v.SpecialeStatus
+                ,v.Naam
+                ,v.VerkooptSoort
+                ,v.StandType AS VerkoperStandType
+                ,v.Dagen
+                ,s.StandType AS StandStandType
+                ,s.Prijs
+                ,s.VerhuurdStatus
+                FROM
+                    Verkoper v
+                JOIN
+                    Stand s ON v.Id = s.VerkoperId;
+
                 ';
     
 

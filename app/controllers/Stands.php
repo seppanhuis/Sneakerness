@@ -17,7 +17,7 @@ class Stands extends BaseController
         
         $data = [
             'title' => 'Overzicht Stands',
-            'Stands' => $result
+            'Stand' => $result
         ];
 
         $this->view('Stands/index', $data);

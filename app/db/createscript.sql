@@ -84,7 +84,7 @@ CREATE TABLE
     Verkoper (
         Id INT PRIMARY KEY AUTO_INCREMENT
         ,Naam VARCHAR(255) NOT NULL
-        ,SpecialeStatus BOOLEAN NOT NULL DEFAULT FALSE
+        ,SpecialeStatus bit NOT NULL DEFAULT 0
         ,VerkooptSoort VARCHAR(100)
         ,StandType ENUM ('A', 'AA', 'AA+') NOT NULL
         ,Dagen ENUM ('1', '2') NOT NULL
@@ -105,8 +105,8 @@ CREATE TABLE
         ,VerhuurdStatus BOOLEAN NOT NULL DEFAULT FALSE
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
-    ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
-    ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
+        ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
+        ,DatumGewijzigd DATETIME(6) NOT NULL DEFAULT NOW(6) ON UPDATE NOW(6)
         ,FOREIGN KEY (VerkoperId) REFERENCES Verkoper (Id) ON DELETE CASCADE
     ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4;
 
@@ -348,7 +348,7 @@ INSERT INTO
 VALUES
     (
         'SneakerShop NL'
-        ,TRUE
+        ,1
         ,'Vintage Sneakers'
         ,'AA+'
         ,'2'
@@ -357,7 +357,7 @@ VALUES
     )
     ,(
         'StreetFood Co'
-        ,FALSE
+        ,0
         ,'Eten & Drinken'
         ,'A'
         ,'1'
@@ -366,7 +366,7 @@ VALUES
     )
     ,(
         'KidsCorner'
-        ,FALSE
+        ,0
         ,'Kids Toys'
         ,'A'
         ,'1'
@@ -375,7 +375,7 @@ VALUES
     )
     ,(
         'RetroKicks'
-        ,FALSE
+        ,0
         ,'Secondhand'
         ,'AA'
         ,'2'
@@ -384,7 +384,7 @@ VALUES
     )
     ,(
         'UrbanWear'
-        ,TRUE
+        ,1
         ,'Kleding'
         ,'AA+'
         ,'2'
