@@ -17,9 +17,15 @@
       <div class="d-flex flex-wrap align-items-center justify-content-center justify-content-lg-start"> 
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"> <img class="logo" src="<?= URLROOT; ?>/public/img/icon.png" alt="logo"></a>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
+<<<<<<< HEAD
+          <li><a href="#" class="nav-link px-2 text-secondary">Home</a></li>
+          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+=======
           <li><a href="<?= URLROOT; ?>/homepages/index" class="nav-link px-2 text-white">Home</a></li>
           <li><a href="<?= URLROOT; ?>/ticket/index" class="nav-link px-2 text-white">Ticket</a></li>
           <li><a href="<?= URLROOT; ?>/Stands/index" class="nav-link px-2 text-white">Stands</a></li>
+          <li><a href="/verkopers/index" class="nav-link px-2 text-white">Verkopers</a></li
+>>>>>>> be80080bca7bf8f116221eef8775b0a803e6b40d
           <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
           <li><a href="#" class="nav-link px-2 text-white">About</a></li>
           <li><a href="<?= URLROOT; ?>/ContactPersoon/index" class="nav-link px-2 text-white">Contactpersonen</a></li>
