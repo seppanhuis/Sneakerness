@@ -20,7 +20,7 @@
           <li><a href="<?= URLROOT; ?>/homepages/index" class="nav-link px-2 text-white">Home</a></li>
           <li><a href="<?= URLROOT; ?>/ticket/index" class="nav-link px-2 text-white">Ticket</a></li>
           <li><a href="<?= URLROOT; ?>/Verkopers/index" class="nav-link px-2 text-white">Verkopers</a></li>
-          <li><a href="<?= URLROOT; ?>/Eventpage/index" class="nav-link px-2 text-white">Events</a></li>
+          <li><a href="<?= URLROOT; ?>/Event/index" class="nav-link px-2 text-white">Events</a></li>
           <li><a href="<?= URLROOT; ?>/ContactPersoon/index" class="nav-link px-2 text-white">Contactpersonen</a></li>
           <li><a href="<?= URLROOT; ?>/stands/index" class="nav-link px-2 text-white">stands</a></li>
         </ul>

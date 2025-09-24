@@ -9,11 +9,11 @@ class Eventmodel
         $this->db = new Database();
     }
 
-    public function gitallevents()
+    public function getAllEvent()
     {
         
         $sql = 'SELECT   
-                        ,TIK.Naam
+                         TIK.Naam
                         ,TIK.Datum
                         ,TIK.Locatie
                         ,TIK.AantalTicketsPerTijdslot

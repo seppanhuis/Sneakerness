@@ -13,14 +13,14 @@ class Event extends BaseController
     public function index()
     {
         try {
-        $result = $this->Event->GetAllContactPersonen();
+        $result = $this->Event->getAllEvent();
         
         $data = [
             'title' => 'Overzicht Event',
             'Event' => $result
         ];
 
-        $this->view('Eventpage/index', $data);
+        $this->view('Event/index', $data);
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
