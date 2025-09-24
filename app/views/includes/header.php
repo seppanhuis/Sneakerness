@@ -19,9 +19,10 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="<?= URLROOT; ?>/homepages/index" class="nav-link px-2 text-white">Home</a></li>
           <li><a href="<?= URLROOT; ?>/ticket/index" class="nav-link px-2 text-white">Ticket</a></li>
-          <li><a href="<?= URLROOT; ?>/Stands/index" class="nav-link px-2 text-white">Stands</a></li>
-          <li><a href="<?= URLROOT; ?>/verkopers/index" class="nav-link px-2 text-white">Verkopers</a></li>
+          <li><a href="<?= URLROOT; ?>/Verkopers/index" class="nav-link px-2 text-white">Verkopers</a></li>
+          <li><a href="<?= URLROOT; ?>/Eventpage/index" class="nav-link px-2 text-white">Events</a></li>
           <li><a href="<?= URLROOT; ?>/ContactPersoon/index" class="nav-link px-2 text-white">Contactpersonen</a></li>
+          <li><a href="<?= URLROOT; ?>/stands/index" class="nav-link px-2 text-white">stands</a></li>
         </ul>
         <div class="text-end"> <button type="button" class="btn btn-outline-light me-2">Login</button> <button type="button" class="btn btn-warning">Sign-up</button> </div>
       </div>
