@@ -19,7 +19,7 @@
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="<?= URLROOT; ?>/homepages/index" class="nav-link px-2 text-white">Home</a></li>
           <li><a href="<?= URLROOT; ?>/ticket/index" class="nav-link px-2 text-white">Ticket</a></li>
-          <li><a href="#" class="nav-link px-2 text-white">Pricing</a></li>
+          <li><a href="<?= URLROOT; ?>/Eventpage/index" class="nav-link px-2 text-white">Events</a></li>
           <li><a href="#" class="nav-link px-2 text-white">FAQs</a></li>
           <li><a href="#" class="nav-link px-2 text-white">About</a></li>
           <li><a href="<?= URLROOT; ?>/ContactPersoon/index" class="nav-link px-2 text-white">Contactpersonen</a></li>
