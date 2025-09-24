@@ -9,7 +9,7 @@ class ContactPersoon extends BaseController
         $this->ContactPersoon = $this->model('ContactPersoonModel');
     }
 
-
+    // stuur alle data van de contact personen naar ContactPersoon/index met de data ContactPersonen
     public function index()
     {
         try {

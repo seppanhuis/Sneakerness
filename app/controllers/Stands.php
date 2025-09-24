@@ -9,7 +9,7 @@ class Stands extends BaseController
         $this->Stands = $this->model('StandsModel');
     }
 
-
+    //stuurt alle informatie van de stands naar de view als Stand naar Stand/index
     public function index()
     {
         try {

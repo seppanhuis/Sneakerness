@@ -6,7 +6,7 @@ class ContactPersoonModel{
     {
         $this->db = new Database();
     }
-
+    // haalt alle gegevens op van Contact personen
     public function GetAllContactPersonen() {
         $sql = 'SELECT 
                 Id

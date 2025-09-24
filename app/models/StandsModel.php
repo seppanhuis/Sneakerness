@@ -6,7 +6,7 @@ class StandsModel{
     {
         $this->db = new Database();
     }
-
+    // haalt alles van stands op een een paar van de verkopers
     public function GetAllStands() {
         $sql = 'SELECT
                 v.Naam
