@@ -18,13 +18,13 @@
         <a href="/" class="d-flex align-items-center mb-2 mb-lg-0 text-white text-decoration-none"> <img class="logo" src="<?= URLROOT; ?>/public/img/icon.png" alt="logo"></a>
         <ul class="nav col-12 col-lg-auto me-lg-auto mb-2 justify-content-center mb-md-0">
           <li><a href="<?= URLROOT; ?>/homepages/index" class="nav-link px-2 text-white">Home</a></li>
-          <li><a href="<?= URLROOT; ?>/ticket/index" class="nav-link px-2 text-white">Ticket</a></li>
-          <li><a href="<?= URLROOT; ?>/Verkopers/index" class="nav-link px-2 text-white">Verkopers</a></li>
-          <li><a href="<?= URLROOT; ?>/Event/index" class="nav-link px-2 text-white">Events</a></li>
-          <li><a href="<?= URLROOT; ?>/ContactPersoon/index" class="nav-link px-2 text-white">Contactpersonen</a></li>
-          <li><a href="<?= URLROOT; ?>/stands/index" class="nav-link px-2 text-white">stands</a></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
+          <li></li>
         </ul>
-        <div class="text-end"> <button type="button" class="btn btn-outline-light me-2">Login</button> <button type="button" class="btn btn-warning">Sign-up</button> </div>
+        <div class="text-end"><a href="<?= URLROOT; ?>/dashboard/start" class="btn btn-outline-light me-2">Dashboard</a></div>
       </div>
     </div>
   </header>
