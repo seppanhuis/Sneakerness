@@ -28,20 +28,38 @@ class ContactPersoon extends BaseController
 
         public function create()
     {
+        $error = '';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-
-            var_dump($_POST);
-            $result = $this->ContactPersoon->CreateContactPersoon($_POST);
-            if ($result) {
-                header("Location:". URLROOT. "/ContactPersoon/index");
+            // Alleen verwerken als alle velden bestaan én niet leeg zijn
+            if (
+                isset($_POST['Naam'], $_POST['Telefoonnummer'], $_POST['Emailadres']) &&
+                trim($_POST['Naam']) !== '' &&
+                trim($_POST['Telefoonnummer']) !== '' &&
+                trim($_POST['Emailadres']) !== ''
+            ) {
+                $data = [
+                    'Naam' => trim($_POST['Naam']),
+                    'Telefoonnummer' => trim($_POST['Telefoonnummer']),
+                    'Emailadres' => trim($_POST['Emailadres'])
+                ];
+                $result = $this->ContactPersoon->CreateContactPersoon($data);
+                if ($result) {
+                    header("Location:". URLROOT. "/ContactPersoon/index");
+                    exit;
+                } else {
+                    $error = 'Opslaan mislukt.';
+                }
+            } else {
+                $error = 'Vul alle velden in aub.';
             }
         }
 
         $data = [
             'title' => 'Nieuwe Zanger',
-            'Naam' => '',
-            'Telefoonnummer' => '',
-            'Emailadres' => ''
+            'Naam' => $_POST['Naam'] ?? '',
+            'Telefoonnummer' => $_POST['Telefoonnummer'] ?? '',
+            'Emailadres' => $_POST['Emailadres'] ?? '',
+            'error' => $error
         ];
 
         $this->view('ContactPersoon/create', $data);
