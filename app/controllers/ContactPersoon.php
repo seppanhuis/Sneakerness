@@ -25,4 +25,28 @@ class ContactPersoon extends BaseController
             error_log($e->getMessage());
         }
     }
+
+        public function create()
+    {
+        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+
+            var_dump($_POST);
+            $result = $this->ContactPersoon->CreateContactPersoon($_POST);
+            if ($result) {
+                header("Location:". URLROOT. "/ContactPersoon/index");
+            }
+        }
+
+        $data = [
+            'title' => 'Nieuwe Zanger',
+            'Naam' => '',
+            'Nettowaarde' => '',
+            'Genre' => '',
+            'Land' => '',
+            'Mobiel' => '',
+            'Leeftijd' => ''
+        ];
+
+        $this->view('ContactPersoon/create', $data);
+    }
 }
