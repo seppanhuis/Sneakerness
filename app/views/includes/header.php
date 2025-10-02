@@ -24,6 +24,7 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a href="<?= URLROOT; ?>/homepages/index" class="nav-link">Home</a></li>
+            <li class="nav-item"><a href="<?= URLROOT; ?>/ticket/koop" class="nav-link">Koop Tickets</a></li>
           </ul>
           <div class="d-flex">
             <a href="<?= URLROOT; ?>/dashboard/start" class="btn btn-outline-light me-2">Dashboard</a>

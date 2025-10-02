@@ -10,80 +10,77 @@ class Database
     private $dbUser = DB_USER;
     private $dbPass = DB_PASS;
 
-
     private $dbHandler;
     private $statement;
 
     public function __construct()
     {
-        /**
-         * Dit is de connectiestring die nodig voor het maken van een
-         * nieuw PDO object
-         */
+        // Connectiestring voor PDO
         $conn = 'mysql:host=' . $this->dbHost . ';dbname=' . $this->dbName;
 
-        /**
-         * We geven nog wat options mee voor het PDO-object om 
-         * fouten weer te geven
-         */
         $options = array(
-            PDO::ATTR_PERSISTENT =>true,
+            PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
             PDO::ATTR_EMULATE_PREPARES => false
         );
 
         try {
-            /**
-             * Maken we eenverbinding met de database mysql server
-             */
             $this->dbHandler = new PDO($conn, $this->dbUser, $this->dbPass, $options);
         } catch (PDOException $e) {
-            /**
-             * Wanneer er een error optreed daarbij wordt er een PDOException object 
-             * aangemaakt met informatie over de error
-             */
-            // logger(__LINE__, __METHOD__, __FILE__, $e->getMessage());
             echo "Op dit moment kunnen we u niet helpen... probeer het later nog eens";
-            header('Refresh:30; url=' .URLROOT . '/homepages/index');
+            header('Refresh:30; url=' . URLROOT . '/homepages/index');
+            exit;
         }
     }
 
+    // Bereidt een SQL query voor
     public function query($sql)
     {
         $this->statement = $this->dbHandler->prepare($sql);
     }
 
+    // Voert query uit en haalt meerdere resultaten op
     public function resultSet()
     {
         $this->statement->execute();
         return $this->statement->fetchAll(PDO::FETCH_OBJ);
     }
 
-    /**
-     * Deze methode bind de waardes aan de parameters in de query
-     */
+    // Voert query uit en haalt één resultaat op
+    public function single()
+    {
+        $this->statement->execute();
+        $result = $this->statement->fetch(PDO::FETCH_OBJ);
+        $this->statement->closeCursor();
+        return $result;
+    }
+
+    // Bind een parameter aan de query met automatisch type-detectie
     public function bind($parameter, $value, $type = null)
     {
+        if (is_null($type)) {
+            if (is_int($value)) {
+                $type = PDO::PARAM_INT;
+            } elseif (is_bool($value)) {
+                $type = PDO::PARAM_BOOL;
+            } elseif (is_null($value)) {
+                $type = PDO::PARAM_NULL;
+            } else {
+                $type = PDO::PARAM_STR;
+            }
+        }
         $this->statement->bindValue($parameter, $value, $type);
     }
 
-    /**
-     * Deze methode voert de query uit
-     */
+    // Voer query uit
     public function execute()
     {
         return $this->statement->execute();
     }
 
-    public function single()
+    // Voer een directe query uit zonder bind
+    public function outQuery($sql)
     {
-        $this->statement->execute();
-        $result = $this->statement->fetch(PDO::FETCH_OBJ);
-        $this->statement->closecursor();
-        return $result;
-    }
-
-    public function outQuery($sql) {
         return $this->dbHandler->query($sql);
     }
 }

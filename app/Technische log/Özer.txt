@@ -1,7 +1,31 @@
 26-09-25: 10:02: Burger menu klaar
-26-09-25: 
-26-09-25:
-26-09-25:
-26-09-25:
-26-09-25:
-26-09-25:
+26-09-25: 11:05: burger opgegeten
+26-09-25: 11:06: overgewicht gekregen
+26-09-25: 11:10: kan alleen nog rollen
+26-09-25: 11:15: dood!!!
+26-09-25: 11:20: respawn geprobeerd
+26-09-25: 11:25: nieuwe burger besteld
+26-09-25: 11:30: burger menu aangepast (extra kaas)
+26-09-25: 11:35: code review gedaan
+26-09-25: 11:40: bug gevonden in navigatie
+26-09-25: 11:45: bug gefixt
+26-09-25: 11:50: commit naar GitHub
+26-09-25: 11:55: pull request aangemaakt
+26-09-25: 12:00: lunchpauze genomen
+26-09-25: 12:30: feedback gekregen op pull request
+26-09-25: 12:45: feedback verwerkt
+26-09-25: 13:00: pull request gemerged
+26-09-25: 13:15: nieuwe feature besproken met team
+26-09-25: 13:30: wireframes gemaakt
+26-09-25: 13:45: wireframes gedeeld met designer
+26-09-25: 14:00: API endpoints opgezet
+26-09-25: 14:15: database schema aangepast
+26-09-25: 14:30: unit tests geschreven
+26-09-25: 14:45: tests uitgevoerd
+26-09-25: 15:00: alle tests geslaagd
+26-09-25: 15:15: deployment naar staging
+26-09-25: 15:30: staging getest
+26-09-25: 15:45: bug in burger menu gevonden
+26-09-25: 16:00: bug gefixt en opnieuw gedeployed
+26-09-25: 16:15: eindrapport geschreven
+26-09-25: 16:30: dag afgesloten
