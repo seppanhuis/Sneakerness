@@ -29,6 +29,22 @@ class ContactPersoonModel{
     }
 
         public function CreateContactPersoon() {
-       
+        $sql = 'SELECT 
+                 CP.Id
+                ,CP.Naam
+                ,CP.Telefoonnummer
+                ,CP.Emailadres
+
+                FROM Contactpersoon as CP
+                ORDER BY CP.Id ASC
+                LIMIT 10;
+                ';
+
+
+                
+                
+                $this->db->query($sql);
+
+                return $this->db->resultSet();
     }
 }
