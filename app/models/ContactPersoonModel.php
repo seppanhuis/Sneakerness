@@ -27,4 +27,8 @@ class ContactPersoonModel{
 
                 return $this->db->resultSet();
     }
+
+        public function CreateContactPersoon() {
+       
+    }
 }

@@ -40,11 +40,8 @@ class ContactPersoon extends BaseController
         $data = [
             'title' => 'Nieuwe Zanger',
             'Naam' => '',
-            'Nettowaarde' => '',
-            'Genre' => '',
-            'Land' => '',
-            'Mobiel' => '',
-            'Leeftijd' => ''
+            'Telefoonnummer' => '',
+            'Emailadres' => ''
         ];
 
         $this->view('ContactPersoon/create', $data);
