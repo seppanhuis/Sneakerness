@@ -19,10 +19,7 @@ class ContactPersoonModel{
                 ORDER BY CP.Id ASC
                 LIMIT 10;
                 ';
-    
 
-                
-                
                 $this->db->query($sql);
 
                 return $this->db->resultSet();
@@ -36,7 +33,13 @@ class ContactPersoonModel{
         $this->db->bind(':naam', $data['Naam'], PDO::PARAM_STR);
         $this->db->bind(':telefoonnummer', $data['Telefoonnummer'], PDO::PARAM_STR);
         $this->db->bind(':emailadres', $data['Emailadres'], PDO::PARAM_STR);
-
-        return $this->db->execute();
+        try {
+            return $this->db->execute();
+        } catch (PDOException $e) {
+            if ($e->getCode() == '23000') { // Duplicate entry
+                return 'duplicate_email';
+            }
+            return false;
+        }
     }
 }

@@ -115,8 +115,8 @@ CREATE TABLE
     Contactpersoon (
         Id INT PRIMARY KEY AUTO_INCREMENT
         ,Naam VARCHAR(255) NOT NULL
-        ,Telefoonnummer VARCHAR(20)
-        ,Emailadres VARCHAR(255)
+        ,Telefoonnummer VARCHAR(20) NOT NULL
+        ,Emailadres VARCHAR(255) UNIQUE NOT NULL
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
     ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)

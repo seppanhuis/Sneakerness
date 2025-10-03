@@ -23,7 +23,7 @@ CREATE TABLE
     Bezoeker (
         Id INT PRIMARY KEY AUTO_INCREMENT,
         Naam VARCHAR(255) NOT NULL,
-        Emailadres VARCHAR(255) UNIQUE NOT NULL,
+        Emailadres VARCHAR(255) UNIQUE NOT NULLUNIQUE NOT NULL,
         IsActief BIT NOT NULL DEFAULT 1,
         Opmerking VARCHAR(255) Default NULL,
         DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6),
@@ -114,7 +114,7 @@ CREATE TABLE
     Contactpersoon (
         Id INT PRIMARY KEY AUTO_INCREMENT,
         Naam VARCHAR(255) NOT NULL,
-        Telefoonnummer VARCHAR(20),
+        Telefoonnummer VARCHAR(20) NOT NULL,
         Emailadres VARCHAR(255),
         IsActief BIT NOT NULL DEFAULT 1,
         Opmerking VARCHAR(255) Default NULL,

@@ -30,7 +30,7 @@ class ContactPersoon extends BaseController
     {
         $error = '';
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Alleen verwerken als alle velden bestaan én niet leeg zijn
+            // Alleen verwerken als alle velden bestaan én geen lege waarden zijn
             if (
                 isset($_POST['Naam'], $_POST['Telefoonnummer'], $_POST['Emailadres']) &&
                 trim($_POST['Naam']) !== '' &&
@@ -43,7 +43,9 @@ class ContactPersoon extends BaseController
                     'Emailadres' => trim($_POST['Emailadres'])
                 ];
                 $result = $this->ContactPersoon->CreateContactPersoon($data);
-                if ($result) {
+                if ($result === 'duplicate_email') {
+                    $error = 'Dit e-mailadres is al in gebruik.';
+                } elseif ($result) {
                     header("Location:". URLROOT. "/ContactPersoon/index");
                     exit;
                 } else {
@@ -53,14 +55,6 @@ class ContactPersoon extends BaseController
                 $error = 'Vul alle velden in aub.';
             }
         }
-
-        $data = [
-            'title' => 'Nieuwe Zanger',
-            'Naam' => $_POST['Naam'] ?? '',
-            'Telefoonnummer' => $_POST['Telefoonnummer'] ?? '',
-            'Emailadres' => $_POST['Emailadres'] ?? '',
-            'error' => $error
-        ];
 
         $this->view('ContactPersoon/create', $data);
     }
