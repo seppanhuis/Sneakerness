@@ -24,15 +24,10 @@
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav me-auto mb-2 mb-lg-0">
             <li class="nav-item"><a href="<?= URLROOT; ?>/homepages/index" class="nav-link">Home</a></li>
-            <li class="nav-item"><a href="<?= URLROOT; ?>/ticket/index" class="nav-link">Ticket</a></li>
-            <li class="nav-item"><a href="<?= URLROOT; ?>/Verkopers/index" class="nav-link">Verkopers</a></li>
-            <li class="nav-item"><a href="<?= URLROOT; ?>/Event/index" class="nav-link">Events</a></li>
-            <li class="nav-item"><a href="<?= URLROOT; ?>/ContactPersoon/index" class="nav-link">Contactpersonen</a></li>
-            <li class="nav-item"><a href="<?= URLROOT; ?>/stands/index" class="nav-link">stands</a></li>
+            <li class="nav-item"><a href="<?= URLROOT; ?>/ticket/koop" class="nav-link">Koop Tickets</a></li>
           </ul>
           <div class="d-flex">
-            <button type="button" class="btn btn-outline-light me-2">Login</button>
-            <button type="button" class="btn btn-warning">Sign-up</button>
+            <a href="<?= URLROOT; ?>/dashboard/start" class="btn btn-outline-light me-2">Dashboard</a>
           </div>
         </div>
       </nav>
