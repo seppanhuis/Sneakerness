@@ -19,7 +19,7 @@
                 </div>
             <?php endif; ?>
             <form action="<?= URLROOT; ?>/Stands/create" method="post">
-                
+
                 <div class="mb-3">
                     <label for="StandType" class="form-label">Stand Type</label>
                     <select name="StandType" id="StandType" class="form-select" required>
@@ -32,25 +32,26 @@
 
                 <div class="mb-3">
                     <label for="Prijs" class="form-label">Prijs</label>
-                    <input name="Prijs" type="number" step="0.01" min="0" class="form-control" id="Prijs" placeholder="Bijv. 100.00" 
-                           value="<?= htmlspecialchars($data['Prijs'] ?? '') ?>" required>
-                </div>
-
-                <div class="mb-3">
-                    <label for="VerhuurdStatus" class="form-label">Verhuurd Status</label>
-                    <select name="VerhuurdStatus" id="VerhuurdStatus" class="form-select" required>
-                        <option value="" disabled <?= !isset($data['VerhuurdStatus']) ? 'selected' : ''; ?>>-- Kies status --</option>
-                        <option value="0" <?= (isset($data['VerhuurdStatus']) && ($data['VerhuurdStatus'] == '0')) ? 'selected' : ''; ?>>Niet Verhuurd</option>
-                        <option value="1" <?= (isset($data['VerhuurdStatus']) && ($data['VerhuurdStatus'] == '1')) ? 'selected' : ''; ?>>Verhuurd</option>
-                    </select>
+                    <input
+                        name="Prijs"
+                        type="number"
+                        step="0.01"
+                        min="0"
+                        max="99999999.99"
+                        class="form-control"
+                        id="Prijs"
+                        placeholder="Bijv. 100.00"
+                        value="<?= htmlspecialchars($data['Prijs'] ?? '') ?>"
+                        required>
                 </div>
 
                 <button class="btn btn-primary btn-sm" type="submit">Verstuur</button>
             </form>
+
         </div>
         <div class="col-3"></div>
     </div>
-    
-    <a href="<?= URLROOT; ?>">Terug</a> 
 
-<?php require_once APPROOT . '/views/includes/footer.php'; ?>
+    <a href="<?= URLROOT; ?>">Terug</a>
+
+    <?php require_once APPROOT . '/views/includes/footer.php'; ?>

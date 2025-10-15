@@ -1,58 +1,32 @@
 <?php require_once APPROOT . '/views/includes/header.php'; ?>
 
-<div class="container extra mt-3">
-
+<div class="container mt-3">
     <div class="row">
-        <div class="col-1"></div>
-        <div class="col-10">
-            <h3><?= $data['title']; ?></h3>
-            <a href="<?= URLROOT; ?>/Stands/create/" type="button" class="btn btn-primary btn-sm" role="button">Nieuwe Stand</a>
-        </div>
-        <div class="col-1"></div>
-    </div>
+        <div class="col-3"></div>
+        <div class="col-6">
+            <h3><?= htmlspecialchars($data['title']); ?></h3>
 
-    <!-- begin tabel met stand- en verkopergegevens -->
-    <div class="row mt-4">
-        <div class="col-1"></div>
-        <div class="col-10" style="overflow-x:auto;">
-            <table class="table table-striped table-hover">
-                <thead>
-                    <tr>
-                        <th>Naam</th>
-                        <th>Speciale Status</th>
-                        <th>Verkoopt Soort</th>
-                        <th>Verkoper Stand Type</th>
-                        <th>Dagen</th>
-                        <th>Stand Type</th>
-                        <th>Prijs</th>
-                        <th>Verhuurd</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <?php if (empty($data['Stand'])) : ?>
-                        <tr>
-                            <td colspan="8" class="text-center fw-bold">Geen stands gevonden</td>
-                        </tr>
-                    <?php else : ?>
-                        <?php foreach ($data['Stand'] as $stand) : ?>
-                            <tr>
-                                <td><?= htmlspecialchars($stand->Naam ?? 'Niet Gehuurd'); ?></td>
-                                <td><?= isset($stand->SpecialeStatus) ? ($stand->SpecialeStatus ? 'Ja' : 'Nee') : 'nee'; ?></td>
-                                <td><?= htmlspecialchars($stand->VerkooptSoort ?? 'Niet Gehuurd'); ?></td>
-                                <td><?= htmlspecialchars($stand->VerkoperStandType ?? 'Niet Gehuurd'); ?></td>
-                                <td><?= htmlspecialchars($stand->Dagen ?? 'Niet Gehuurd'); ?></td>
-                                <td><?= htmlspecialchars($stand->StandStandType ?? 'Niet Gehuurd'); ?></td>
-                                <td>
-                                    &euro;<?= isset($stand->Prijs) ? number_format((float)$stand->Prijs, 2, ',', '.') : '—'; ?>
-                                </td>
-                                <td><?= isset($stand->VerhuurdStatus) ? ($stand->VerhuurdStatus ? 'Ja' : 'Nee') : 'Nee'; ?></td>
-                            </tr>
+            <?php if (!empty($data['error'])): ?>
+                <div class="alert alert-danger"><?= htmlspecialchars($data['error']); ?></div>
+            <?php endif; ?>
+
+            <form method="post" action="">
+                <div class="mb-3">
+                    <label for="VerkoperId" class="form-label">Kies een verkoper</label>
+                    <select name="VerkoperId" id="VerkoperId" class="form-select" required>
+                        <option value="" disabled selected>-- Kies een verkoper --</option>
+                        <?php foreach ($data['verkopers'] as $verkoper): ?>
+                            <option value="<?= $verkoper->Id ?>"><?= htmlspecialchars($verkoper->Naam) ?></option>
                         <?php endforeach; ?>
-                    <?php endif; ?>
-                </tbody>
-            </table>
-        </div>
-        <div class="col-1"></div>
-    </div>
+                    </select>
+                </div>
 
-    <?php require_once APPROOT . '/views/includes/footer.php'; ?>
+                <button class="btn btn-success" type="submit">Verhuren</button>
+                <a href="<?= URLROOT; ?>/Stands/index" class="btn btn-secondary">Annuleren</a>
+            </form>
+        </div>
+        <div class="col-3"></div>
+    </div>
+</div>
+
+<?php require_once APPROOT . '/views/includes/footer.php'; ?>

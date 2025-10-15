@@ -46,7 +46,8 @@ class StandsModel
         $this->db->bind(':verkoperId', $data['VerkoperId'], PDO::PARAM_INT);
         $this->db->bind(':standType', $data['StandType'], PDO::PARAM_STR);
         $this->db->bind(':prijs', $data['Prijs'], PDO::PARAM_STR);
-        $this->db->bind(':verhuurdStatus', $data['VerhuurdStatus'], PDO::PARAM_STR);
+        $this->db->bind(':verhuurdStatus', $data['VerhuurdStatus'], PDO::PARAM_INT);
+
         try {
             return $this->db->execute();
         } catch (PDOException $e) {
@@ -55,5 +56,19 @@ class StandsModel
             }
             return false;
         }
+    }
+
+    public function UpdateStand($standId, $data)
+    {
+        $sql = "UPDATE Stand 
+            SET VerhuurdStatus = :verhuurdStatus, VerkoperId = :verkoperId
+            WHERE Id = :standId";
+
+        $this->db->query($sql);
+        $this->db->bind(':verhuurdStatus', $data['VerhuurdStatus'], PDO::PARAM_INT);
+        $this->db->bind(':verkoperId', $data['VerkoperId'], PDO::PARAM_INT);
+        $this->db->bind(':standId', $standId, PDO::PARAM_INT);
+
+        return $this->db->execute();
     }
 }
