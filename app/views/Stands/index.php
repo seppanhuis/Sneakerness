@@ -6,6 +6,7 @@
         <div class="col-1"></div>
         <div class="col-10">
             <h3><?= $data['title']; ?></h3>
+            <a href="<?= URLROOT; ?>/Stands/create/" type="button" class="btn btn-primary btn-sm" role="button">Nieuwe Stand</a>
         </div>
         <div class="col-1"></div>
     </div>
@@ -35,14 +36,16 @@
                     <?php else : ?>
                         <?php foreach ($data['Stand'] as $stand) : ?>
                             <tr>
-                                <td><?= htmlspecialchars($stand->Naam); ?></td>
-                                <td><?= $stand->SpecialeStatus ? 'Ja' : 'Nee'; ?></td>
-                                <td><?= htmlspecialchars($stand->VerkooptSoort); ?></td>
-                                <td><?= htmlspecialchars($stand->VerkoperStandType); ?></td>
-                                <td><?= htmlspecialchars($stand->Dagen); ?></td>
-                                <td><?= htmlspecialchars($stand->StandStandType); ?></td>
-                                <td>&euro;<?= number_format($stand->Prijs, 2, ',', '.'); ?></td>
-                                <td><?= $stand->VerhuurdStatus ? 'Ja' : 'Nee'; ?></td>
+                                <td><?= htmlspecialchars($stand->Naam ?? 'Niet Gehuurd'); ?></td>
+                                <td><?= isset($stand->SpecialeStatus) ? ($stand->SpecialeStatus ? 'Ja' : 'Nee') : 'nee'; ?></td>
+                                <td><?= htmlspecialchars($stand->VerkooptSoort ?? 'Niet Gehuurd'); ?></td>
+                                <td><?= htmlspecialchars($stand->VerkoperStandType ?? 'Niet Gehuurd'); ?></td>
+                                <td><?= htmlspecialchars($stand->Dagen ?? 'Niet Gehuurd'); ?></td>
+                                <td><?= htmlspecialchars($stand->StandStandType ?? 'Niet Gehuurd'); ?></td>
+                                <td>
+                                    &euro;<?= isset($stand->Prijs) ? number_format((float)$stand->Prijs, 2, ',', '.') : '—'; ?>
+                                </td>
+                                <td><?= isset($stand->VerhuurdStatus) ? ($stand->VerhuurdStatus ? 'Ja' : 'Nee') : 'Nee'; ?></td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -52,4 +55,4 @@
         <div class="col-1"></div>
     </div>
 
-<?php require_once APPROOT . '/views/includes/footer.php'; ?>
+    <?php require_once APPROOT . '/views/includes/footer.php'; ?>

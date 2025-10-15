@@ -1,36 +1,44 @@
 <?php
 
-class StandsModel{
+class StandsModel
+{
     private $db;
     public function __construct()
     {
         $this->db = new Database();
     }
     // haalt alles van stands op een een paar van de verkopers
-    public function GetAllStands() {
+    public function GetAllStands()
+    {
         $sql = 'SELECT
-                v.Naam
-                ,v.SpecialeStatus
-                ,v.Naam
-                ,v.VerkooptSoort
-                ,v.StandType AS VerkoperStandType
-                ,v.Dagen
-                ,s.StandType AS StandStandType
-                ,s.Prijs
-                ,s.VerhuurdStatus
-                FROM
-                    Verkoper v
-                JOIN
-                    Stand s ON v.Id = s.VerkoperId;
+                s.Id AS StandId,
+                s.StandType AS StandStandType,
+                s.Prijs,
+                s.VerhuurdStatus,
+                s.IsActief,
+                s.Opmerking,
+                s.DatumAangemaakt,
+                s.DatumGewijzigd,
+                v.Id AS VerkoperId,
+                v.Naam,
+                v.SpecialeStatus,
+                v.VerkooptSoort,
+                v.StandType AS VerkoperStandType,
+                v.Dagen
+            FROM
+                Stand s
+            LEFT JOIN
+                Verkoper v ON v.Id = s.VerkoperId
+            ORDER BY
+                s.Id ASC;';
 
-                ';
-                
-                $this->db->query($sql);
-
-                return $this->db->resultSet();
+        $this->db->query($sql);
+        return $this->db->resultSet();
     }
 
-    public function CreateStand($data) {
+
+    public function CreateStand($data)
+    {
         $sql = "INSERT INTO Stand (VerkoperId, StandType, Prijs, VerhuurdStatus) 
             VALUES (:verkoperId, :standType, :prijs, :verhuurdStatus);";
 
@@ -49,4 +57,3 @@ class StandsModel{
         }
     }
 }
-

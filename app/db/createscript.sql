@@ -99,10 +99,10 @@ CREATE TABLE
 CREATE TABLE
     Stand (
         Id INT PRIMARY KEY AUTO_INCREMENT
-        ,VerkoperId INT NOT NULL
+        ,VerkoperId INT NULL
         ,StandType ENUM ('A', 'AA', 'AA+') NOT NULL
         ,Prijs DECIMAL(10, 2) NOT NULL
-        ,VerhuurdStatus BOOLEAN NOT NULL DEFAULT FALSE
+        ,VerhuurdStatus BIT NOT NULL DEFAULT FALSE
         ,IsActief BIT NOT NULL DEFAULT 1
         ,Opmerking VARCHAR(255) Default NULL
         ,DatumAangemaakt DATETIME(6) NOT NULL DEFAULT NOW(6)
