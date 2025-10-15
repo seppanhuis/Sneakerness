@@ -36,7 +36,7 @@ class ContactPersoonModel{
         try {
             return $this->db->execute();
         } catch (PDOException $e) {
-            if ($e->getCode() == '23000') { // Zelfde
+            if ($e->getCode() == '23000') { 
                 return 'duplicate_email';
             }
             return false;
