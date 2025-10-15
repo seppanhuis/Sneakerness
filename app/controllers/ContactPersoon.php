@@ -9,60 +9,60 @@ class ContactPersoon extends BaseController
         $this->ContactPersoon = $this->model('ContactPersoonModel');
     }
 
-    // stuur alle data van de contact personen naar ContactPersoon/index met de data ContactPersonen
     public function index()
     {
-        try {
         $result = $this->ContactPersoon->GetAllContactPersonen();
-        
+
         $data = [
             'title' => 'Overzicht Contactpersonen',
             'ContactPersonen' => $result
         ];
 
         $this->view('ContactPersoon/index', $data);
-        } catch (Exception $e) {
-            error_log($e->getMessage());
-        }
     }
 
-        public function create()
+    public function assign($contactpersoonId = null)
     {
         $error = '';
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-            // Alleen verwerken als alle velden bestaan én geen lege waarden zijn
-            if (
-                isset($_POST['Naam'], $_POST['Telefoonnummer'], $_POST['Emailadres']) &&
-                trim($_POST['Naam']) !== '' &&
-                trim($_POST['Telefoonnummer']) !== '' &&
-                trim($_POST['Emailadres']) !== ''
-            ) {
-                $data = [
-                    'Naam' => trim($_POST['Naam']),
-                    'Telefoonnummer' => trim($_POST['Telefoonnummer']),
-                    'Emailadres' => trim($_POST['Emailadres'])
-                ];
-                $result = $this->ContactPersoon->CreateContactPersoon($data);
-                if ($result === 'duplicate_email') {
-                    $error = 'Deze Contact persoon bestaat al';
-                } elseif ($result) {
-                    header("Location:". URLROOT. "/ContactPersoon/index");
+        $verkopers = $this->ContactPersoon->getAllVerkopers();
+
+        if ($contactpersoonId) {
+            $contactpersoon = $this->ContactPersoon->getContactPersoonById($contactpersoonId);
+        } else {
+            $contactpersoon = null;
+        }
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            if (!empty($_POST['VerkoperId'])) {
+                $verkoperId = $_POST['VerkoperId'];
+                if ($contactpersoonId) {
+                    $result = $this->ContactPersoon->updateVerkoper($contactpersoonId, $verkoperId);
                 } else {
-                    $error = 'Opslaan mislukt.';
+                    $result = $this->ContactPersoon->assignContactToVerkoper([
+                        'VerkoperId' => $verkoperId,
+                        'ContactpersoonId' => $_POST['ContactpersoonId']
+                    ]);
+                }
+
+                if ($result) {
+                    $_SESSION['success'] = 'Koppeling succesvol!';
+                    header("Location: " . URLROOT . "/ContactPersoon/index");
+                } else {
+                    $error = 'Koppelen of aanpassen mislukt';
                 }
             } else {
-                $error = 'Vul alle velden in aub.';
+                $error = 'Selecteer een verkoper';
             }
         }
 
         $data = [
-            'title' => 'Nieuwe Contactpersoon',
-            'Naam' => $_POST['Naam'] ?? '',
-            'Telefoonnummer' => $_POST['Telefoonnummer'] ?? '',
-            'Emailadres' => $_POST['Emailadres'] ?? '',
+            'title' => $contactpersoonId ? 'Wijzig koppeling' : 'Koppel Contactpersoon aan Verkoper',
+            'Verkopers' => $verkopers,
+            'ContactPersoon' => $contactpersoon,
+            'ContactPersonen' => $this->ContactPersoon->GetAllContactPersonen(),
             'error' => $error
         ];
 
-        $this->view('ContactPersoon/create', $data);
+        $this->view('ContactPersoon/assign', $data);
     }
 }

@@ -71,4 +71,17 @@ class StandsModel
 
         return $this->db->execute();
     }
+    public function GetAllVerkopers()
+    {
+        $sql = "SELECT Id, Naam FROM Verkoper ORDER BY Naam ASC";
+        $this->db->query($sql);
+        return $this->db->resultSet();
+    }
+    public function GetStandById($standId)
+    {
+        $sql = "SELECT * FROM Stand WHERE Id = :standId";
+        $this->db->query($sql);
+        $this->db->bind(':standId', $standId, PDO::PARAM_INT);
+        return $this->db->single();
+    }
 }

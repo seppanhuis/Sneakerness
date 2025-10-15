@@ -76,56 +76,55 @@ class Stands extends BaseController
     }
 
     public function verhuur($standId)
-{
-    $error = '';
+    {
+        $error = '';
 
-    // Check geldig standId
-    if (!is_numeric($standId)) {
-        header("Location:" . URLROOT . "/Stands/index");
-        return;
-    }
-
-    // Haal stand op
-    $stand = $this->Stands->GetStandById($standId);
-    if (!$stand || $stand->VerhuurdStatus == 1) {
-        header("Location:" . URLROOT . "/Stands/index");
-        return;
-    }
-
-    // Verwerk POST
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        $verkoperId = $_POST['VerkoperId'] ?? '';
-
-        if ($verkoperId !== '') {
-            $data = [
-                'VerhuurdStatus' => 1,
-                'VerkoperId' => (int)$verkoperId
-            ];
-
-            $result = $this->Stands->UpdateStand($standId, $data);
-
-            if ($result) {
-                header("Location:" . URLROOT . "/Stands/index");
-                return;
-            } else {
-                $error = 'Verhuren mislukt.';
-            }
-        } else {
-            $error = 'Kies een verkoper.';
+        // Controleer geldig standId
+        if (!is_numeric($standId)) {
+            header("Location:" . URLROOT . "/Stands/index");
+            return;
         }
+
+        // Haal stand op
+        $stand = $this->Stands->GetStandById($standId);
+        if (!$stand || $stand->VerhuurdStatus == 1) {
+            header("Location:" . URLROOT . "/Stands/index");
+            return;
+        }
+
+        // Verwerk POST
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $verkoperId = $_POST['VerkoperId'] ?? '';
+
+            if ($verkoperId !== '') {
+                $data = [
+                    'VerhuurdStatus' => 1,
+                    'VerkoperId' => (int)$verkoperId
+                ];
+
+                $result = $this->Stands->UpdateStand($standId, $data);
+
+                if ($result) {
+                    header("Location:" . URLROOT . "/Stands/index");
+                    return;
+                } else {
+                    $error = 'Verhuren mislukt.';
+                }
+            } else {
+                $error = 'Kies een verkoper.';
+            }
+        }
+
+        // Haal alle verkopers op
+        $verkopers = $this->Stands->GetAllVerkopers();
+
+        $data = [
+            'title' => 'Verhuur Stand',
+            'stand' => $stand,
+            'verkopers' => $verkopers,
+            'error' => $error
+        ];
+
+        $this->view('Stands/verhuur', $data);
     }
-
-    // Haal alle verkopers op
-    $verkopers = $this->Stands->GetAllVerkopers();
-
-    $data = [
-        'title' => 'Verhuur Stand',
-        'stand' => $stand,
-        'verkopers' => $verkopers,
-        'error' => $error
-    ];
-
-    $this->view('Stands/verhuur', $data);
-}
-
 }
