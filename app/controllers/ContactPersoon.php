@@ -44,10 +44,9 @@ class ContactPersoon extends BaseController
                 ];
                 $result = $this->ContactPersoon->CreateContactPersoon($data);
                 if ($result === 'duplicate_email') {
-                    $error = 'Dit e-mailadres is al in gebruik.';
+                    $error = 'Deze Contact persoon bestaat al';
                 } elseif ($result) {
                     header("Location:". URLROOT. "/ContactPersoon/index");
-                    exit;
                 } else {
                     $error = 'Opslaan mislukt.';
                 }
@@ -55,6 +54,14 @@ class ContactPersoon extends BaseController
                 $error = 'Vul alle velden in aub.';
             }
         }
+
+        $data = [
+            'title' => 'Nieuwe Contactpersoon',
+            'Naam' => $_POST['Naam'] ?? '',
+            'Telefoonnummer' => $_POST['Telefoonnummer'] ?? '',
+            'Emailadres' => $_POST['Emailadres'] ?? '',
+            'error' => $error
+        ];
 
         $this->view('ContactPersoon/create', $data);
     }
