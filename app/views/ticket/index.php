@@ -2,9 +2,9 @@
 
 <div class="container mt-3">
     <h3><?= $data['title']; ?>
-        <!-- <a href="<?= URLROOT; ?>/ticket/create">
+        <a href="<?= URLROOT; ?>/ticket/create">
             <i class="bi bi-plus-circle-fill text-danger"></i>
-        </a> -->
+        </a>
     </h3>
 
     <table class="table table-striped mt-3">
