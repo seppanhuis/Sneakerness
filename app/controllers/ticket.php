@@ -76,6 +76,15 @@ class Ticket extends BaseController
             'message' => 'none'
         ];
 
+
+
+
+
+
+
+
+        
+
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $postData = $_POST;
             $postData['id'] = $id;
