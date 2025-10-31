@@ -33,7 +33,7 @@
                         <td><?= $ticket->Datum; ?></td>
                         <td>
                             <a href="<?= URLROOT; ?>/ticket/update/<?= $ticket->Id; ?>" class="btn btn-sm btn-warning">Bewerk</a>
-                            <a href="<?= URLROOT; ?>/ticket/delete/<?= $ticket->Id; ?>" class="btn btn-sm btn-danger delete-ticket">Annuleer</a>
+                            <a href="<?= URLROOT; ?>/ticket/delete/<?= $ticket->Id; ?>" class="btn btn-sm btn-danger">Verwijder</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>
@@ -43,15 +43,3 @@
 </div>
 
 <?php require_once APPROOT . '/views/includes/footer.php'; ?>
-<script>
-    (function(){
-        document.querySelectorAll('.delete-ticket').forEach(function(el){
-            el.addEventListener('click', function(e){
-                var confirmMsg = 'Weet je zeker dat je dit ticket wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.';
-                if (!confirm(confirmMsg)) {
-                    e.preventDefault();
-                }
-            });
-        });
-    })();
-</script>
