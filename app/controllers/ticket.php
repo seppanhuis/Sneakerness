@@ -79,9 +79,36 @@ class Ticket extends BaseController
         if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $postData = $_POST;
             $postData['id'] = $id;
-            $this->ticketModel->updateTicket($postData);
-            $data['message'] = 'flex';
-            header('Refresh:2; url=' . URLROOT . '/ticket/index');
+
+            // Server-side validation: ensure submitted Datum matches the selected evenement's Datum
+            $selectedEventId = isset($postData['EvenementId']) ? $postData['EvenementId'] : null;
+            $submittedDatum = isset($postData['Datum']) ? $postData['Datum'] : null;
+            $eventDatum = null;
+
+            foreach ($evenementen as $ev) {
+                if ($ev->Id == $selectedEventId) {
+                    $eventDatum = $ev->Datum;
+                    break;
+                }
+            }
+
+            $normalize = function($d) {
+                if (!$d) return null;
+                $ts = strtotime($d);
+                if ($ts === false) return null;
+                return date('Y-m-d', $ts);
+            };
+
+            $normSubmitted = $normalize($submittedDatum);
+            $normEvent = $normalize($eventDatum);
+
+            if ($normSubmitted === null || $normEvent === null || $normSubmitted !== $normEvent) {
+                $data['error'] = 'De geselecteerde datum komt niet overeen met de datum van het gekozen evenement.';
+            } else {
+                $this->ticketModel->updateTicket($postData);
+                $data['message'] = 'flex';
+                header('Refresh:2; url=' . URLROOT . '/ticket/index');
+            }
         }
 
         $this->view('ticket/update', $data);
