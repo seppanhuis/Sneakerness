@@ -127,4 +127,11 @@ class Stands extends BaseController
 
         $this->view('Stands/verhuur', $data);
     }
+
+    public function delete($Id)
+    {
+        $result = $this->Stands->deleteStand($Id);
+
+        header("Location:" . URLROOT . "/Stands/index");
+    }
 }

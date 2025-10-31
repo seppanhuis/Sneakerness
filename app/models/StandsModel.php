@@ -77,6 +77,12 @@ class StandsModel
         $this->db->query($sql);
         return $this->db->resultSet();
     }
+    public function deleteStand(int $Id) {
+        $sql = "DELETE FROM Stand WHERE Id = $Id;";
+
+        $this->db->query($sql);
+        return $this->db->execute();
+    }
     public function GetStandById($standId)
     {
         $sql = "SELECT * FROM Stand WHERE Id = :standId";

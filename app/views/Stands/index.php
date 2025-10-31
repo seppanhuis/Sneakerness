@@ -60,6 +60,7 @@ function show($value, $default = 'Niet Gehuurd') {
                                     <?php else : ?>
                                         <button class="btn btn-secondary btn-sm" disabled>Verhuurd</button>
                                     <?php endif; ?>
+                                    <td><a class="btn btn-danger btn-sm" href="<?= URLROOT; ?>/Stands/delete/<?= $stand->StandId; ?>">Delete</a></td>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
