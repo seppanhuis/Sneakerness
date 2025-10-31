@@ -1,11 +1,19 @@
 <?php require_once APPROOT . '/views/includes/header.php'; ?>
 
+<?php
+// Helperfunctie voor veilige weergave van velden
+function show($value, $default = 'Niet Gehuurd') {
+    return htmlspecialchars($value ?? $default);
+}
+?>
+
 <div class="container extra mt-3">
 
     <div class="row">
         <div class="col-1"></div>
         <div class="col-10">
-            <h3><?= $data['title']; ?></h3>
+            <h3><?= htmlspecialchars($data['title'] ?? 'Overzicht Stands'); ?></h3>
+            <a href="<?= URLROOT; ?>/Stands/create/" class="btn btn-primary btn-sm">Nieuwe Stand</a>
         </div>
         <div class="col-1"></div>
     </div>
@@ -25,24 +33,34 @@
                         <th>Stand Type</th>
                         <th>Prijs</th>
                         <th>Verhuurd</th>
+                        <th>Verhuren</th>
                     </tr>
                 </thead>
                 <tbody>
                     <?php if (empty($data['Stand'])) : ?>
                         <tr>
-                            <td colspan="8" class="text-center fw-bold">Geen stands gevonden</td>
+                            <td colspan="9" class="text-center fw-bold">Geen stands gevonden</td>
                         </tr>
                     <?php else : ?>
                         <?php foreach ($data['Stand'] as $stand) : ?>
-                            <tr>
-                                <td><?= htmlspecialchars($stand->Naam); ?></td>
-                                <td><?= $stand->SpecialeStatus ? 'Ja' : 'Nee'; ?></td>
-                                <td><?= htmlspecialchars($stand->VerkooptSoort); ?></td>
-                                <td><?= htmlspecialchars($stand->VerkoperStandType); ?></td>
-                                <td><?= htmlspecialchars($stand->Dagen); ?></td>
-                                <td><?= htmlspecialchars($stand->StandStandType); ?></td>
-                                <td>&euro;<?= number_format($stand->Prijs, 2, ',', '.'); ?></td>
-                                <td><?= $stand->VerhuurdStatus ? 'Ja' : 'Nee'; ?></td>
+                            <tr class="<?= isset($stand->VerhuurdStatus) && $stand->VerhuurdStatus ? 'table-secondary' : ''; ?>">
+                                <td><?= show($stand->Naam); ?></td>
+                                <td><?= isset($stand->SpecialeStatus) ? ($stand->SpecialeStatus ? 'Ja' : 'Nee') : 'Nee'; ?></td>
+                                <td><?= show($stand->VerkooptSoort); ?></td>
+                                <td><?= show($stand->VerkoperStandType); ?></td>
+                                <td><?= show($stand->Dagen); ?></td>
+                                <td><?= show($stand->StandStandType); ?></td>
+                                <td>
+                                    &euro;<?= isset($stand->Prijs) ? number_format((float)$stand->Prijs, 2, ',', '.') : '—'; ?>
+                                </td>
+                                <td><?= isset($stand->VerhuurdStatus) ? ($stand->VerhuurdStatus ? 'Ja' : 'Nee') : 'Nee'; ?></td>
+                                <td>
+                                    <?php if (!isset($stand->VerhuurdStatus) || !$stand->VerhuurdStatus) : ?>
+                                        <a href="<?= URLROOT; ?>/Stands/verhuur/<?= $stand->StandId ?? ''; ?>" class="btn btn-success btn-sm">Verhuren</a>
+                                    <?php else : ?>
+                                        <button class="btn btn-secondary btn-sm" disabled>Verhuurd</button>
+                                    <?php endif; ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                     <?php endif; ?>
@@ -51,5 +69,7 @@
         </div>
         <div class="col-1"></div>
     </div>
+
+</div>
 
 <?php require_once APPROOT . '/views/includes/footer.php'; ?>
