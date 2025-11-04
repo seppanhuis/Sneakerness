@@ -51,7 +51,6 @@ class Stands extends BaseController
                         $error = 'Deze Stand bestaat al.';
                     } elseif ($result) {
                         header("Location:" . URLROOT . "/Stands/index");
-                        
                     } else {
                         $error = 'Opslaan mislukt.';
                     }
@@ -77,13 +76,11 @@ class Stands extends BaseController
 
         if (!is_numeric($standId)) {
             header("Location:" . URLROOT . "/Stands/index");
-            
         }
 
         $stand = $this->Stands->GetStandById($standId);
         if (!$stand || $stand->VerhuurdStatus == 1) {
             header("Location:" . URLROOT . "/Stands/index");
-            
         }
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -99,7 +96,6 @@ class Stands extends BaseController
 
                 if ($result) {
                     header("Location:" . URLROOT . "/Stands/index");
-                    
                 } else {
                     $error = 'Verhuren mislukt.';
                 }
@@ -124,7 +120,6 @@ class Stands extends BaseController
     {
         if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header("Location:" . URLROOT . "/Stands/index");
-            
         }
 
         // Delete via model
@@ -142,5 +137,64 @@ class Stands extends BaseController
         ];
 
         $this->view('Stands/index', $data);
+    }
+
+    public function update($Id)
+    {
+        $stand = $this->Stands->GetStandById($Id);
+
+        if (!$stand) {
+            $allStands = $this->Stands->GetAllStands();
+            $data = [
+                'title' => 'Overzicht Stands',
+                'Stand' => $allStands,
+                'message' => 'Deze stand bestaat niet.',
+                'error' => true
+            ];
+            $this->view('Stands/index', $data);
+            return;
+        }
+
+        $error = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $standType = $_POST['StandType'] ?? '';
+            $prijs = $_POST['Prijs'] ?? '';
+
+            if ($standType !== '' && $prijs !== '') {
+                $prijsFloat = (float) str_replace(',', '.', $prijs);
+                if ($prijsFloat < 0 || $prijsFloat > 99999999.99) {
+                    $error = 'Prijs mag maximaal 99.999.999,99 zijn.';
+                } else {
+                    $dataUpdate = [
+                        'StandType' => trim($standType),
+                        'Prijs' => $prijsFloat
+                    ];
+
+                    $result = $this->Stands->UpdateStandDetails($Id, $dataUpdate);
+
+                    $allStands = $this->Stands->GetAllStands();
+                    $message = $result ? 'Stand succesvol bijgewerkt.' : 'Bijwerken mislukt.';
+                    $data = [
+                        'title' => 'Overzicht Stands',
+                        'Stand' => $allStands,
+                        'message' => $message,
+                        'error' => !$result
+                    ];
+                    $this->view('Stands/index', $data);
+                    return;
+                }
+            } else {
+                $error = 'Vul alle velden in aub.';
+            }
+        }
+
+        $data = [
+            'title' => 'Wijzig Stand',
+            'stand' => $stand,
+            'error' => $error
+        ];
+
+        $this->view('Stands/update', $data);
     }
 }
