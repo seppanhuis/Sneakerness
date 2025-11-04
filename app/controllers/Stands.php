@@ -23,15 +23,23 @@ class Stands extends BaseController
         }
     }
 
-    public function update($standId)
+    public function update($Id)
     {
-        $error = '';
-        $stand = $this->Stands->GetStandById($standId);
+        $stand = $this->Stands->GetStandById($Id);
 
         if (!$stand) {
-            header("Location:" . URLROOT . "/Stands/index");
-            exit;
+            $allStands = $this->Stands->GetAllStands();
+            $data = [
+                'title' => 'Overzicht Stands',
+                'Stand' => $allStands,
+                'message' => 'Deze stand bestaat niet.',
+                'error' => true
+            ];
+            $this->view('Stands/index', $data);
+            return;
         }
+
+        $error = '';
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $standType = $_POST['StandType'] ?? '';
@@ -42,19 +50,23 @@ class Stands extends BaseController
                 if ($prijsFloat < 0 || $prijsFloat > 99999999.99) {
                     $error = 'Prijs mag maximaal 99.999.999,99 zijn.';
                 } else {
-                    $data = [
+                    $dataUpdate = [
                         'StandType' => trim($standType),
                         'Prijs' => $prijsFloat
                     ];
 
-                    $result = $this->Stands->UpdateStandDetails($standId, $data);
+                    $result = $this->Stands->UpdateStandDetails($Id, $dataUpdate);
 
-                    if ($result) {
-                        header("Location:" . URLROOT . "/Stands/index?message=Stand succesvol gewijzigd");
-                        exit;
-                    } else {
-                        $error = 'Update mislukt.';
-                    }
+                    $allStands = $this->Stands->GetAllStands();
+                    $message = $result ? 'Stand succesvol bijgewerkt.' : 'Bijwerken mislukt.';
+                    $data = [
+                        'title' => 'Overzicht Stands',
+                        'Stand' => $allStands,
+                        'message' => $message,
+                        'error' => !$result
+                    ];
+                    $this->view('Stands/index', $data);
+                    return;
                 }
             } else {
                 $error = 'Vul alle velden in aub.';
@@ -62,13 +74,30 @@ class Stands extends BaseController
         }
 
         $data = [
-            'title' => 'Stand Wijzigen',
-            'StandType' => $stand->StandType,
-            'Prijs' => $stand->Prijs,
-            'error' => $error,
-            'Id' => $standId
+            'title' => 'Wijzig Stand',
+            'stand' => $stand,
+            'error' => $error
         ];
 
         $this->view('Stands/update', $data);
+    }
+
+    public function delete($Id)
+    {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location:" . URLROOT . "/Stands/index");
+        }
+
+        $result = $this->Stands->deleteStand($Id);
+        $allStands = $this->Stands->GetAllStands();
+
+        $data = [
+            'title' => 'Overzicht Stands',
+            'Stand' => $allStands,
+            'message' => $result['message'],
+            'error' => !$result['status']
+        ];
+
+        $this->view('Stands/index', $data);
     }
 }

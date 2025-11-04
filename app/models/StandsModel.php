@@ -3,44 +3,41 @@
 class StandsModel
 {
     private $db;
+
     public function __construct()
     {
         $this->db = new Database();
     }
-    // haalt alles van stands op een een paar van de verkopers
+
     public function GetAllStands()
     {
         $sql = 'SELECT
-                s.Id AS StandId,
-                s.StandType AS StandStandType,
-                s.Prijs,
-                s.VerhuurdStatus,
-                s.IsActief,
-                s.Opmerking,
-                s.DatumAangemaakt,
-                s.DatumGewijzigd,
-                v.Id AS VerkoperId,
-                v.Naam,
-                v.SpecialeStatus,
-                v.VerkooptSoort,
-                v.StandType AS VerkoperStandType,
-                v.Dagen
-            FROM
-                Stand s
-            LEFT JOIN
-                Verkoper v ON v.Id = s.VerkoperId
-            ORDER BY
-                s.Id ASC;';
+                    s.Id AS Id,
+                    s.StandType AS StandStandType,
+                    s.Prijs,
+                    s.VerhuurdStatus,
+                    s.IsActief,
+                    s.Opmerking,
+                    s.DatumAangemaakt,
+                    s.DatumGewijzigd,
+                    v.Id AS VerkoperId,
+                    v.Naam,
+                    v.SpecialeStatus,
+                    v.VerkooptSoort,
+                    v.StandType AS VerkoperStandType,
+                    v.Dagen
+                FROM Stand s
+                LEFT JOIN Verkoper v ON v.Id = s.VerkoperId
+                ORDER BY s.Id ASC;';
 
         $this->db->query($sql);
         return $this->db->resultSet();
     }
 
-
     public function CreateStand($data)
     {
         $sql = "INSERT INTO Stand (VerkoperId, StandType, Prijs, VerhuurdStatus) 
-            VALUES (:verkoperId, :standType, :prijs, :verhuurdStatus);";
+                VALUES (:verkoperId, :standType, :prijs, :verhuurdStatus);";
 
         $this->db->query($sql);
         $this->db->bind(':verkoperId', $data['VerkoperId'], PDO::PARAM_INT);
@@ -61,8 +58,8 @@ class StandsModel
     public function UpdateStand($standId, $data)
     {
         $sql = "UPDATE Stand 
-            SET VerhuurdStatus = :verhuurdStatus, VerkoperId = :verkoperId
-            WHERE Id = :standId";
+                SET VerhuurdStatus = :verhuurdStatus, VerkoperId = :verkoperId
+                WHERE Id = :standId";
 
         $this->db->query($sql);
         $this->db->bind(':verhuurdStatus', $data['VerhuurdStatus'], PDO::PARAM_INT);
@@ -71,12 +68,37 @@ class StandsModel
 
         return $this->db->execute();
     }
+
     public function GetAllVerkopers()
     {
         $sql = "SELECT Id, Naam FROM Verkoper ORDER BY Naam ASC";
         $this->db->query($sql);
         return $this->db->resultSet();
     }
+
+    public function deleteStand(int $Id)
+    {
+        $stand = $this->GetStandById($Id);
+
+        if (!$stand) {
+            return ['status' => false, 'message' => 'Deze stand bestaat niet.'];
+        }
+
+        if ((int)$stand->VerhuurdStatus === 1) {
+            return ['status' => false, 'message' => 'Deze stand is verhuurd en kan niet verwijderd worden.'];
+        }
+
+        $sql = "DELETE FROM Stand WHERE Id = :id;";
+        $this->db->query($sql);
+        $this->db->bind(':id', $Id, PDO::PARAM_INT);
+
+        if ($this->db->execute()) {
+            return ['status' => true, 'message' => 'Stand succesvol verwijderd.'];
+        } else {
+            return ['status' => false, 'message' => 'Verwijderen mislukt.'];
+        }
+    }
+
     public function GetStandById($standId)
     {
         $sql = "SELECT * FROM Stand WHERE Id = :standId";
@@ -87,7 +109,7 @@ class StandsModel
     public function UpdateStandDetails($standId, $data)
     {
         $sql = "UPDATE Stand 
-            SET StandType = :standType, Prijs = :prijs
+            SET StandType = :standType, Prijs = :prijs, DatumGewijzigd = NOW()
             WHERE Id = :standId";
 
         $this->db->query($sql);

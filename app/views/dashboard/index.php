@@ -36,7 +36,7 @@ if (isset($_POST['logout'])) {
             <a href="<?= URLROOT; ?>/Verkopers/index" class="nav-link px-2 text-white link-card">Verkopers</a>
             <a href="<?= URLROOT; ?>/Event/index" class="nav-link px-2 text-white link-card">Events</a>
             <a href="<?= URLROOT; ?>/ContactPersoon/index" class="nav-link px-2 text-white link-card">Contactpersonen</a>
-            <a href="<?= URLROOT; ?>/stands/index" class="nav-link px-2 text-white link-card">stands</a>
+            <a href="<?= URLROOT; ?>/Stands/index" class="nav-link px-2 text-white link-card">Stands</a>
         </div>
         <div class="col-1"></div>
     </div>
