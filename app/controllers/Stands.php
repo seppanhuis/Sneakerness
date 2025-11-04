@@ -9,7 +9,6 @@ class Stands extends BaseController
         $this->Stands = $this->model('StandsModel');
     }
 
-    //stuurt alle informatie van de stands naar de view als Stand naar Stand/index
     public function index()
     {
         try {
@@ -34,19 +33,16 @@ class Stands extends BaseController
             $standType = $_POST['StandType'] ?? '';
             $prijs = $_POST['Prijs'] ?? '';
 
-            // Controleer dat de velden niet leeg zijn
             if ($standType !== '' && $prijs !== '') {
-
-                // Converteer prijs naar float en limiet check
                 $prijsFloat = (float) str_replace(',', '.', $prijs);
                 if ($prijsFloat < 0 || $prijsFloat > 99999999.99) {
                     $error = 'Prijs mag maximaal 99.999.999,99 zijn.';
                 } else {
                     $data = [
-                        'VerkoperId' => null,           // geen verkoper gekoppeld
+                        'VerkoperId' => null,
                         'StandType' => trim($standType),
                         'Prijs' => $prijsFloat,
-                        'VerhuurdStatus' => 0           // standaard Niet Verhuurd
+                        'VerhuurdStatus' => 0
                     ];
 
                     $result = $this->Stands->CreateStand($data);
@@ -55,6 +51,7 @@ class Stands extends BaseController
                         $error = 'Deze Stand bestaat al.';
                     } elseif ($result) {
                         header("Location:" . URLROOT . "/Stands/index");
+                        
                     } else {
                         $error = 'Opslaan mislukt.';
                     }
@@ -64,7 +61,6 @@ class Stands extends BaseController
             }
         }
 
-        // Data terugsturen naar de view
         $data = [
             'title' => 'Nieuwe Stand',
             'StandType' => $_POST['StandType'] ?? '',
@@ -79,20 +75,17 @@ class Stands extends BaseController
     {
         $error = '';
 
-        // Controleer geldig standId
         if (!is_numeric($standId)) {
             header("Location:" . URLROOT . "/Stands/index");
-            return;
+            
         }
 
-        // Haal stand op
         $stand = $this->Stands->GetStandById($standId);
         if (!$stand || $stand->VerhuurdStatus == 1) {
             header("Location:" . URLROOT . "/Stands/index");
-            return;
+            
         }
 
-        // Verwerk POST
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $verkoperId = $_POST['VerkoperId'] ?? '';
 
@@ -106,7 +99,7 @@ class Stands extends BaseController
 
                 if ($result) {
                     header("Location:" . URLROOT . "/Stands/index");
-                    return;
+                    
                 } else {
                     $error = 'Verhuren mislukt.';
                 }
@@ -115,7 +108,6 @@ class Stands extends BaseController
             }
         }
 
-        // Haal alle verkopers op
         $verkopers = $this->Stands->GetAllVerkopers();
 
         $data = [
@@ -130,8 +122,25 @@ class Stands extends BaseController
 
     public function delete($Id)
     {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
+            header("Location:" . URLROOT . "/Stands/index");
+            
+        }
+
+        // Delete via model
         $result = $this->Stands->deleteStand($Id);
 
-        header("Location:" . URLROOT . "/Stands/index");
+        // Haal alle stands opnieuw op
+        $allStands = $this->Stands->GetAllStands();
+
+        // Verstuur direct naar index met message
+        $data = [
+            'title' => 'Overzicht Stands',
+            'Stand' => $allStands,
+            'message' => $result['message'],
+            'error' => !$result['status']
+        ];
+
+        $this->view('Stands/index', $data);
     }
 }
