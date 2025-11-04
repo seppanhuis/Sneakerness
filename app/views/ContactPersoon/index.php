@@ -2,66 +2,102 @@
 
 <div class="container extra mt-3">
 
-    <div class="row">
+    <div class="row mb-3">
         <div class="col-1"></div>
         <div class="col-10">
             <!-- Titel van de pagina -->
             <h3><?= $data['title']; ?></h3>
-            <a href="<?= URLROOT; ?>/ContactPersoon/create/" type="button" class="btn btn-primary btn-sm" role="button">Nieuwe ContactPersoon</a>
+
+            <a href="<?= URLROOT; ?>/ContactPersoon/create/" 
+               type="button" 
+               class="btn btn-primary btn-sm mb-3" 
+               role="button">
+                Nieuwe ContactPersoon
+            </a>
+
+            <!-- Success melding -->
             <?php if (isset($_SESSION['success'])): ?>
-                <div class="alert alert-success"><?= $_SESSION['success']; ?></div>
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($_SESSION['success']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
                 <?php unset($_SESSION['success']); ?>
             <?php endif; ?>
 
+            <!-- Error melding -->
+            <?php if (isset($_SESSION['error'])): ?>
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <?= htmlspecialchars($_SESSION['error']); ?>
+                    <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                </div>
+                <?php unset($_SESSION['error']); ?>
+            <?php endif; ?>
         </div>
         <div class="col-1"></div>
     </div>
 
-
-
-    <!-- begin tabel tickets -->
+    <!-- begin tabel contactpersonen -->
     <div class="row">
-        <div class="col-1">
-        </div>
+        <div class="col-1"></div>
         <div class="col-10" style="overflow-x:auto;">
-            <table class="table table-striped table-hover">
-                <thead>
+            <table class="table table-striped table-hover align-middle">
+                <thead class="table-dark">
                     <tr>
                         <th>Naam</th>
+                        <th>Telefoonnummer</th>
+                        <th>Emailadres</th>
                         <th>Speciale Status</th>
-                        <th>Verkooper Naam</th>
+                        <th>Verkoper Naam</th>
                         <th>Stand Type</th>
                         <th>Dagen</th>
+                        <th>Koppelingen</th>
                         <th>Acties</th>
                     </tr>
                 </thead>
                 <tbody>
-                    <?php foreach ($data['ContactPersonen'] as $contactpersoon): ?>
+                    <?php if (!empty($data['ContactPersonen'])): ?>
+                        <?php foreach ($data['ContactPersonen'] as $contactpersoon): ?>
+                            <tr>
+                                <td><?= htmlspecialchars($contactpersoon->Naam); ?></td>
+                                <td><?= htmlspecialchars($contactpersoon->Telefoonnummer); ?></td>
+                                <td><?= htmlspecialchars($contactpersoon->Emailadres); ?></td>
+                                <td><?= $contactpersoon->SpecialeStatus ? 'Ja' : 'Nee'; ?></td>
+                                <td><?= htmlspecialchars($contactpersoon->VerkoperNaam ?? '-'); ?></td>
+                                <td><?= htmlspecialchars($contactpersoon->StandType ?? '-'); ?></td>
+                                <td><?= htmlspecialchars($contactpersoon->Dagen ?? '-'); ?></td>
+                                <td><?= (int)$contactpersoon->Koppelingen; ?></td>
+                                <td>
+                                    <a href="<?= URLROOT; ?>/ContactPersoon/assign/<?= $contactpersoon->Id; ?>" 
+                                       class="btn btn-sm btn-success">
+                                        Koppelen
+                                    </a>
+
+                                    <?php if ((int)$contactpersoon->Koppelingen === 0): ?>
+                                        <a href="<?= URLROOT; ?>/ContactPersoon/delete/<?= $contactpersoon->Id; ?>" 
+                                           class="btn btn-sm btn-danger"
+                                           onclick="return confirm('Weet je zeker dat je deze contactpersoon wilt verwijderen?');">
+                                            Verwijderen
+                                        </a>
+                                    <?php else: ?>
+                                        <button class="btn btn-sm btn-secondary" disabled title="Kan niet verwijderen — gekoppeld aan verkoper">
+                                            Verwijderen
+                                        </button>
+                                    <?php endif; ?>
+                                </td>
+                            </tr>
+                        <?php endforeach; ?>
+                    <?php else: ?>
                         <tr>
-                            <td><?= htmlspecialchars($contactpersoon->Naam); ?></td>
-                            <td><?= $contactpersoon->SpecialeStatus ? 'Ja' : 'Nee'; ?></td>
-                            <td><?= htmlspecialchars($contactpersoon->VerkooptSoort); ?></td>
-                            <td><?= htmlspecialchars($contactpersoon->StandType); ?></td>
-                            <td><?= htmlspecialchars($contactpersoon->Dagen); ?></td>
-                            <td>
-                                <a href="<?= URLROOT; ?>/ContactPersoon/assign/<?= $contactpersoon->Id; ?>" class="btn btn-sm btn-success">
-                                    Contactpersoon koppelen
-                                </a>
-                            </td>
+                            <td colspan="9" class="text-center">Geen contactpersonen gevonden.</td>
                         </tr>
-                    <?php endforeach; ?>
+                    <?php endif; ?>
                 </tbody>
-
             </table>
-
         </div>
         <div class="col-1"></div>
     </div>
-    <!-- einde tabel tickets -->
+    <!-- einde tabel -->
 
+</div>
 
-    <script>
-
-    </script>
-
-    <?php require_once APPROOT . '/views/includes/footer.php'; ?>
+<?php require_once APPROOT . '/views/includes/footer.php'; ?>

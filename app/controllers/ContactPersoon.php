@@ -65,4 +65,22 @@ class ContactPersoon extends BaseController
 
         $this->view('ContactPersoon/assign', $data);
     }
+    public function delete($id)
+    {
+        // Controleer of deze contactpersoon nog een koppeling heeft
+        $hasKoppeling = $this->ContactPersoon->hasVerkoperKoppeling($id);
+
+        if ($hasKoppeling) {
+            $_SESSION['error'] = 'Kan niet verwijderen: contactpersoon is gekoppeld aan een verkoper.';
+        } else {
+            $deleted = $this->ContactPersoon->deleteContactPersoon($id);
+            if ($deleted) {
+                $_SESSION['success'] = 'Contactpersoon succesvol verwijderd.';
+            } else {
+                $_SESSION['error'] = 'Verwijderen mislukt.';
+            }
+        }
+
+        header("Location: " . URLROOT . "/ContactPersoon/index");
+    }
 }

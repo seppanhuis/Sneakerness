@@ -8,18 +8,32 @@ class ContactPersoonModel
         $this->db = new Database();
     }
 
-    public function GetAllContactPersonen()
-    {
-        $sql = "SELECT CP.Id, CP.Naam, CP.Telefoonnummer, CP.Emailadres,
-                   V.Naam AS VerkoperNaam, V.SpecialeStatus, V.VerkooptSoort, V.StandType, V.Dagen
+ public function GetAllContactPersonen()
+{
+    $sql = "SELECT 
+                CP.Id, 
+                CP.Naam, 
+                CP.Telefoonnummer, 
+                CP.Emailadres,
+                V.Naam AS VerkoperNaam, 
+                V.SpecialeStatus, 
+                V.VerkooptSoort, 
+                V.StandType, 
+                V.Dagen,
+                (
+                    SELECT COUNT(*) 
+                    FROM ContactPerVerkoper c 
+                    WHERE c.ContactpersoonId = CP.Id
+                ) AS Koppelingen
             FROM Contactpersoon CP
             LEFT JOIN ContactPerVerkoper CPV ON CP.Id = CPV.ContactpersoonId
             LEFT JOIN Verkoper V ON CPV.VerkoperId = V.Id
             ORDER BY CP.Id ASC
             LIMIT 10;";
-        $this->db->query($sql);
-        return $this->db->resultSet();
-    }
+    $this->db->query($sql);
+    return $this->db->resultSet();
+}
+
 
     public function getContactPersoonById($id)
     {
@@ -79,6 +93,24 @@ class ContactPersoonModel
         $this->db->query($sql);
         $this->db->bind(':verkoperId', $verkoperId, PDO::PARAM_INT);
         $this->db->bind(':contactpersoonId', $contactpersoonId, PDO::PARAM_INT);
+        return $this->db->execute();
+    }
+    public function hasVerkoperKoppeling($contactpersoonId)
+    {
+        $sql = "SELECT COUNT(*) AS koppelingen 
+            FROM ContactPerVerkoper 
+            WHERE ContactpersoonId = :id";
+        $this->db->query($sql);
+        $this->db->bind(':id', $contactpersoonId, PDO::PARAM_INT);
+        $result = $this->db->single();
+        return $result->koppelingen > 0; // true als er koppelingen zijn
+    }
+
+    public function deleteContactPersoon($contactpersoonId)
+    {
+        $sql = "DELETE FROM Contactpersoon WHERE Id = :id";
+        $this->db->query($sql);
+        $this->db->bind(':id', $contactpersoonId, PDO::PARAM_INT);
         return $this->db->execute();
     }
 }
