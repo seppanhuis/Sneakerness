@@ -84,4 +84,17 @@ class StandsModel
         $this->db->bind(':standId', $standId, PDO::PARAM_INT);
         return $this->db->single();
     }
+    public function UpdateStandDetails($standId, $data)
+    {
+        $sql = "UPDATE Stand 
+            SET StandType = :standType, Prijs = :prijs
+            WHERE Id = :standId";
+
+        $this->db->query($sql);
+        $this->db->bind(':standType', $data['StandType'], PDO::PARAM_STR);
+        $this->db->bind(':prijs', $data['Prijs'], PDO::PARAM_STR);
+        $this->db->bind(':standId', $standId, PDO::PARAM_INT);
+
+        return $this->db->execute();
+    }
 }
