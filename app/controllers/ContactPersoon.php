@@ -51,7 +51,6 @@ class ContactPersoon extends BaseController
             }
 
             header("Location: " . URLROOT . "/ContactPersoon/index");
-            
         }
 
         $data = [
@@ -69,7 +68,6 @@ class ContactPersoon extends BaseController
         // Als geen ID is meegegeven, terug naar index
         if (!$contactpersoonId) {
             header("Location: " . URLROOT . "/ContactPersoon/index");
-            
         }
 
         // Haal contactpersoon op
@@ -77,7 +75,6 @@ class ContactPersoon extends BaseController
         if (!$contactpersoon) {
             $_SESSION['error'] = 'Contactpersoon niet gevonden.';
             header("Location: " . URLROOT . "/ContactPersoon/index");
-            
         }
 
         $error = '';
@@ -99,7 +96,6 @@ class ContactPersoon extends BaseController
                     if ($result) {
                         $_SESSION['success'] = 'Contactpersoon succesvol bijgewerkt!';
                         header("Location: " . URLROOT . "/ContactPersoon/index");
-                        
                     } else {
                         $error = 'Bijwerken mislukt. Controleer de gegevens.';
                     }
@@ -116,5 +112,24 @@ class ContactPersoon extends BaseController
         ];
 
         $this->view('ContactPersoon/update', $data);
+    }
+    public function delete($contactpersoonId)
+    {
+        if (!$contactpersoonId) {
+            $_SESSION['error'] = 'Geen contactpersoon geselecteerd.';
+            header("Location: " . URLROOT . "/ContactPersoon/index");
+            
+        }
+
+        // Controleer of deze contactpersoon nog gekoppeld is aan een verkoper
+        if ($this->ContactPersoon->hasVerkoperKoppeling($contactpersoonId)) {
+            $_SESSION['error'] = 'Kan niet verwijderen: contactpersoon is gekoppeld aan een verkoper.';
+        } else {
+            $deleted = $this->ContactPersoon->deleteContactPersoon($contactpersoonId);
+            $_SESSION['success'] = $deleted ? 'Contactpersoon succesvol verwijderd.' : 'Verwijderen mislukt.';
+        }
+
+        header("Location: " . URLROOT . "/ContactPersoon/index");
+        
     }
 }

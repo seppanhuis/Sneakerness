@@ -128,6 +128,19 @@ class ContactPersoonModel
             return false;
         }
     }
+    public function deleteContactPersoon($contactpersoonId)
+    {
+        try {
+            $sql = "DELETE FROM Contactpersoon WHERE Id = :id";
+            $this->db->query($sql);
+            $this->db->bind(':id', $contactpersoonId, PDO::PARAM_INT);
+            return $this->db->execute();
+        } catch (PDOException $e) {
+            error_log($e->getMessage());
+            return false;
+        }
+    }
+
     public function hasVerkoperKoppeling($contactpersoonId)
     {
         $sql = "SELECT COUNT(*) AS koppelingen FROM ContactPerVerkoper WHERE ContactpersoonId = :id";
