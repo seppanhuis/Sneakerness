@@ -135,4 +135,23 @@ class TicketModel
             return false;
         }
     }
+
+    // Controleer of er tickets bestaan voor een gegeven evenement
+    // Retourneert true wanneer minimaal één ticket bestaat, anders false
+    public function hasTicketsForEvent($evenementId)
+    {
+        if (!$this->db) {
+            return false;
+        }
+
+        try {
+            $this->db->query("SELECT COUNT(*) AS cnt FROM Ticket WHERE EvenementId = :id");
+            $this->db->bind(':id', $evenementId);
+            $row = $this->db->single();
+            return ($row && isset($row->cnt) && $row->cnt > 0);
+        } catch (\Exception $e) {
+            error_log('TicketModel::hasTicketsForEvent error: ' . $e->getMessage());
+            return false;
+        }
+    }
 }
