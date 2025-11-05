@@ -1,15 +1,28 @@
 <?php require_once APPROOT . '/views/includes/header.php'; ?>
 
+<?php
+/*
+  Pagina voor het aanpassen van een bestaand ticket.
+  - Toont server-side succesmelding via $data['message']
+  - Toont server-side foutmelding via $data['error']
+  - Bevat client-side validatie die controleert of de geselecteerde datum overeenkomt
+    met de datum van het gekozen evenement.
+*/
+?>
+
 <div class="container mt-3">
     <h3><?= $data['title']; ?></h3>
 
+    <!-- Succesmelding: zichtbaar wanneer $data['message'] niet 'none' is -->
     <div class="alert alert-success" style="display:<?= $data['message']; ?>;">Ticket aangepast!</div>
     <?php if (!empty($data['error'])): ?>
+        <!-- Server-side validatiefout tonen -->
         <div id="serverError" class="alert alert-danger"><?= $data['error']; ?></div>
     <?php else: ?>
         <div id="serverError" class="alert alert-danger" style="display:none"></div>
     <?php endif; ?>
 
+    <!-- Formulier: POST naar controller update met het ticket-id -->
     <form method="POST" action="<?= URLROOT; ?>/ticket/update/<?= $data['ticket']->Id; ?>">
         <div class="mb-3">
             <label>Bezoeker:</label>
@@ -47,6 +60,7 @@
 
         <div class="mb-3">
             <label>Datum:</label>
+            <!-- Input voor datum; client-side script vergelijkt deze met data-datum van geselecteerd evenement -->
             <input id="datumInput" type="date" name="Datum" value="<?= $data['ticket']->Datum ?>" class="form-control" required>
             <div id="clientError" class="text-danger mt-1" style="display:none">De geselecteerde datum komt niet overeen met de datum van het gekozen evenement.</div>
         </div>
@@ -70,6 +84,7 @@
         
         <script>
             (function(){
+                // Client-side validatie: zorgt voor betere UX door datum-vergelijking
                 const form = document.querySelector('form');
                 const select = document.getElementById('evenementSelect');
                 const datumInput = document.getElementById('datumInput');
@@ -79,7 +94,6 @@
                 function normalizeDateForCompare(value) {
                     if (!value) return null;
                     // value expected in YYYY-MM-DD from input[type=date]
-                    // If value contains time or other format, try to parse
                     const d = new Date(value);
                     if (isNaN(d.getTime())) return null;
                     const yyyy = d.getFullYear();
@@ -98,18 +112,19 @@
                     const submittedDatum = normalizeDateForCompare(datumInput.value);
 
                     if (eventDatum === null || submittedDatum === null) {
-                        // if either date can't be parsed, allow submit and let server validate
+                        // Als parsing faalt, laat server-side validatie dit afhandelen
                         clientError.style.display = 'none';
                         return;
                     }
 
                     if (eventDatum !== submittedDatum) {
+                        // Toon foutmelding en blokkeer submit wanneer data ongelijk zijn
                         e.preventDefault();
                         clientError.style.display = 'block';
                         return false;
                     }
 
-                    // dates match, allow submit
+                    // data komen overeen: formulier kan verzonden worden
                     clientError.style.display = 'none';
                 });
             })();

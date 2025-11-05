@@ -1,4 +1,12 @@
 <?php require_once APPROOT . '/views/includes/header.php'; ?>
+<?php
+/*
+    Dit is de overzichtspagina voor tickets.
+    - De header wordt ingeladen via include.
+    - De tabel toont alle tickets met acties om te bewerken of te verwijderen.
+    - JavaScript onderaan toont een confirm-dialog bij verwijderen.
+*/
+?>
 
 <div class="container mt-3">
     <h3><?= $data['title']; ?>
@@ -21,8 +29,10 @@
         </thead>
         <tbody>
             <?php if (empty($data['tickets'])): ?>
+                <!-- Geen tickets: toon gebruiker een vriendelijke melding -->
                 <tr><td colspan="7" class="text-center">Geen tickets gevonden</td></tr>
             <?php else: ?>
+                <!-- Loop door alle tickets en toon relevante velden -->
                 <?php foreach ($data['tickets'] as $ticket): ?>
                     <tr>
                         <td><?= $ticket->BezoekerNaam; ?></td>
@@ -33,6 +43,7 @@
                         <td><?= $ticket->Datum; ?></td>
                         <td>
                             <a href="<?= URLROOT; ?>/ticket/update/<?= $ticket->Id; ?>" class="btn btn-sm btn-warning">Bewerk</a>
+                            <!-- Verwijder-link: heeft class .delete-ticket voor JS confirm -->
                             <a href="<?= URLROOT; ?>/ticket/delete/<?= $ticket->Id; ?>" class="btn btn-sm btn-danger delete-ticket">Annuleer</a>
                         </td>
                     </tr>
@@ -45,10 +56,12 @@
 <?php require_once APPROOT . '/views/includes/footer.php'; ?>
 <script>
     (function(){
+        // JS: controleer of gebruiker zeker weet dat hij/zij wil verwijderen
         document.querySelectorAll('.delete-ticket').forEach(function(el){
             el.addEventListener('click', function(e){
                 var confirmMsg = 'Weet je zeker dat je dit ticket wilt verwijderen? Deze actie kan niet ongedaan worden gemaakt.';
                 if (!confirm(confirmMsg)) {
+                    // Annuleer de navigatie als gebruiker op 'Annuleer' klikt
                     e.preventDefault();
                 }
             });
