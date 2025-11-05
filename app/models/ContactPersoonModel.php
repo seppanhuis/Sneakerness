@@ -128,6 +128,33 @@ class ContactPersoonModel
             return false;
         }
     }
+    
+    // Contactpersoon bijwerken in de database
+    // - $contactpersoonId: integer ID van de contactpersoon
+    // - $data: array met keys 'Naam', 'Telefoonnummer', 'Emailadres', 'Opmerking'
+    public function updateContactPersoon($contactpersoonId, $data)
+    {
+        try {
+            $sql = "UPDATE Contactpersoon SET
+                        Naam = :naam,
+                        Telefoonnummer = :telefoonnummer,
+                        Emailadres = :emailadres,
+                        Opmerking = :opmerking
+                    WHERE Id = :id";
+
+            $this->db->query($sql);
+            $this->db->bind(':naam', $data['Naam'], PDO::PARAM_STR);
+            $this->db->bind(':telefoonnummer', $data['Telefoonnummer'], PDO::PARAM_STR);
+            $this->db->bind(':emailadres', $data['Emailadres'], PDO::PARAM_STR);
+            $this->db->bind(':opmerking', $data['Opmerking'], PDO::PARAM_STR);
+            $this->db->bind(':id', $contactpersoonId, PDO::PARAM_INT);
+
+            return $this->db->execute();
+        } catch (PDOException $e) {
+            error_log('ContactPersoonModel::updateContactPersoon error: ' . $e->getMessage());
+            return false;
+        }
+    }
     public function deleteContactPersoon($contactpersoonId)
     {
         try {
