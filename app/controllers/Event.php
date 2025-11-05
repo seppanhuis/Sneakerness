@@ -2,10 +2,13 @@
 class Event extends BaseController
 {
     private $eventModel;
+    private $ticketModel;
 
     public function __construct()
     {
         $this->eventModel = $this->model('EvenementModel');
+        // Laad het ticket model zodat we kunnen controleren op afhankelijke tickets
+        $this->ticketModel = $this->model('ticketModel');
         session_start();
     }
 
@@ -140,6 +143,13 @@ class Event extends BaseController
 
     // Controleer of de gebruiker bevestigt
     if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        // Voordat we verwijderen: controleer of er tickets gekoppeld zijn aan dit evenement
+        if ($this->ticketModel && $this->ticketModel->hasTicketsForEvent($id)) {
+            $_SESSION['message'] = 'Kan dit evenement niet verwijderen — er zijn nog tickets gekoppeld aan dit evenement.';
+            $_SESSION['message_type'] = 'warning';
+            header("Location: " . URLROOT . "/Event/index");
+            exit;
+        }
         if ($this->eventModel->deleteEvent($id)) {
             $_SESSION['message'] = 'Event succesvol verwijderd!';
             $_SESSION['message_type'] = 'success';
