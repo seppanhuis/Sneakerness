@@ -12,8 +12,9 @@
             <label for="VerkoperId" class="form-label">Kies een Verkoper</label>
             <select name="VerkoperId" id="VerkoperId" class="form-select" required>
                 <option value="" disabled selected>-- Selecteer verkoper --</option>
+                <option value="none">Geen verkoper</option>
                 <?php foreach ($data['Verkopers'] as $verkoper): ?>
-                    <option value="<?= $verkoper->Id ?>" 
+                    <option value="<?= $verkoper->Id ?>"
                         <?= isset($data['ContactPersoon']) && $verkoper->Id == $data['ContactPersoon']->VerkoperId ? 'selected' : ''; ?>>
                         <?= htmlspecialchars($verkoper->Naam) ?>
                     </option>
@@ -22,15 +23,15 @@
         </div>
 
         <?php if (!$data['ContactPersoon']): ?>
-        <div class="mb-3">
-            <label for="ContactpersoonId" class="form-label">Kies een Contactpersoon</label>
-            <select name="ContactpersoonId" id="ContactpersoonId" class="form-select" required>
-                <option value="" disabled selected>-- Selecteer contactpersoon --</option>
-                <?php foreach ($data['ContactPersonen'] as $cp): ?>
-                    <option value="<?= $cp->Id ?>"><?= htmlspecialchars($cp->Naam) ?></option>
-                <?php endforeach; ?>
-            </select>
-        </div>
+            <div class="mb-3">
+                <label for="ContactpersoonId" class="form-label">Kies een Contactpersoon</label>
+                <select name="ContactpersoonId" id="ContactpersoonId" class="form-select" required>
+                    <option value="" disabled selected>-- Selecteer contactpersoon --</option>
+                    <?php foreach ($data['ContactPersonen'] as $cp): ?>
+                        <option value="<?= $cp->Id ?>"><?= htmlspecialchars($cp->Naam) ?></option>
+                    <?php endforeach; ?>
+                </select>
+            </div>
         <?php endif; ?>
 
         <button type="submit" class="btn btn-primary btn-sm">Opslaan</button>

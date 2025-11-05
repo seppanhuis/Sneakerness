@@ -193,7 +193,6 @@ INSERT INTO Contactpersoon (Naam, Telefoonnummer, Emailadres, Opmerking) VALUES
 ('Bram Willems', '+31 6 66554433', 'bram.willems@example.com', 'Nog niet gekoppeld'),
 ('Nina de Groot', '+31 6 99887766', 'nina.groot@example.com', 'Vrij contact');
 
--- ContactPerVerkoper (alleen 5 gekoppeld)
 INSERT INTO ContactPerVerkoper (VerkoperId, ContactpersoonId, Opmerking) VALUES
 (1, 1, 'Hoofdcontact SneakerShop'),
 (2, 2, 'Foodtruck coordinator'),

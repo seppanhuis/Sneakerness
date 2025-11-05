@@ -11,76 +11,110 @@ class ContactPersoon extends BaseController
 
     public function index()
     {
-        $result = $this->ContactPersoon->GetAllContactPersonen();
+        $contactpersonen = $this->ContactPersoon->GetAllContactPersonen();
 
         $data = [
             'title' => 'Overzicht Contactpersonen',
-            'ContactPersonen' => $result
+            'ContactPersonen' => $contactpersonen,
+            'success' => $_SESSION['success'] ?? '',
+            'error' => $_SESSION['error'] ?? ''
         ];
+
+        unset($_SESSION['success'], $_SESSION['error']);
 
         $this->view('ContactPersoon/index', $data);
     }
 
     public function assign($contactpersoonId = null)
     {
-        $error = '';
         $verkopers = $this->ContactPersoon->getAllVerkopers();
-
-        if ($contactpersoonId) {
-            $contactpersoon = $this->ContactPersoon->getContactPersoonById($contactpersoonId);
-        } else {
-            $contactpersoon = null;
-        }
+        $contactpersoon = $contactpersoonId ? $this->ContactPersoon->getContactPersoonById($contactpersoonId) : null;
 
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            if (!empty($_POST['VerkoperId'])) {
-                $verkoperId = $_POST['VerkoperId'];
-                if ($contactpersoonId) {
-                    $result = $this->ContactPersoon->updateVerkoper($contactpersoonId, $verkoperId);
-                } else {
-                    $result = $this->ContactPersoon->assignContactToVerkoper([
-                        'VerkoperId' => $verkoperId,
-                        'ContactpersoonId' => $_POST['ContactpersoonId']
-                    ]);
-                }
+            $verkoperId = $_POST['VerkoperId'] ?? null;
 
-                if ($result) {
-                    $_SESSION['success'] = 'Koppeling succesvol!';
-                    header("Location: " . URLROOT . "/ContactPersoon/index");
-                } else {
-                    $error = 'Koppelen of aanpassen mislukt';
+            if ($verkoperId === 'none') {
+                // Loskoppelen
+                if ($contactpersoonId) {
+                    $this->ContactPersoon->removeVerkoperKoppeling($contactpersoonId);
                 }
             } else {
-                $error = 'Selecteer een verkoper';
+                // Controleer of contactpersoon al gekoppeld is
+                if ($this->ContactPersoon->hasVerkoperKoppeling($contactpersoonId)) {
+                    $this->ContactPersoon->updateVerkoper($contactpersoonId, $verkoperId);
+                } else {
+                    $this->ContactPersoon->assignContactToVerkoper([
+                        'VerkoperId' => $verkoperId,
+                        'ContactpersoonId' => $contactpersoonId
+                    ]);
+                }
             }
+
+            header("Location: " . URLROOT . "/ContactPersoon/index");
+            
         }
 
         $data = [
             'title' => $contactpersoonId ? 'Wijzig koppeling' : 'Koppel Contactpersoon aan Verkoper',
             'Verkopers' => $verkopers,
-            'ContactPersoon' => $contactpersoon,
-            'ContactPersonen' => $this->ContactPersoon->GetAllContactPersonen(),
-            'error' => $error
+            'ContactPersoon' => $contactpersoon
         ];
 
         $this->view('ContactPersoon/assign', $data);
     }
-    public function delete($id)
-    {
-        // Controleer of deze contactpersoon nog een koppeling heeft
-        $hasKoppeling = $this->ContactPersoon->hasVerkoperKoppeling($id);
 
-        if ($hasKoppeling) {
-            $_SESSION['error'] = 'Kan niet verwijderen: contactpersoon is gekoppeld aan een verkoper.';
-        } else {
-            $deleted = $this->ContactPersoon->deleteContactPersoon($id);
-            if ($deleted) {
-                $_SESSION['success'] = 'Contactpersoon succesvol verwijderd.';
+
+    public function update($contactpersoonId = null)
+    {
+        // Als geen ID is meegegeven, terug naar index
+        if (!$contactpersoonId) {
+            header("Location: " . URLROOT . "/ContactPersoon/index");
+            
+        }
+
+        // Haal contactpersoon op
+        $contactpersoon = $this->ContactPersoon->getContactPersoonById($contactpersoonId);
+        if (!$contactpersoon) {
+            $_SESSION['error'] = 'Contactpersoon niet gevonden.';
+            header("Location: " . URLROOT . "/ContactPersoon/index");
+            
+        }
+
+        $error = '';
+
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+            $data = [
+                'Naam' => trim($_POST['Naam'] ?? ''),
+                'Telefoonnummer' => trim($_POST['Telefoonnummer'] ?? ''),
+                'Emailadres' => trim($_POST['Emailadres'] ?? ''),
+                'Opmerking' => trim($_POST['Opmerking'] ?? ''),
+            ];
+
+            // Validatie
+            if (empty($data['Naam']) || empty($data['Telefoonnummer']) || empty($data['Emailadres'])) {
+                $error = 'Naam, telefoonnummer en emailadres zijn verplicht!';
             } else {
-                $_SESSION['error'] = 'Verwijderen mislukt.';
+                try {
+                    $result = $this->ContactPersoon->updateContactPersoon($contactpersoonId, $data);
+                    if ($result) {
+                        $_SESSION['success'] = 'Contactpersoon succesvol bijgewerkt!';
+                        header("Location: " . URLROOT . "/ContactPersoon/index");
+                        
+                    } else {
+                        $error = 'Bijwerken mislukt. Controleer de gegevens.';
+                    }
+                } catch (Exception $e) {
+                    $error = 'Er is een fout opgetreden: ' . $e->getMessage();
+                }
             }
         }
 
-        header("Location: " . URLROOT . "/ContactPersoon/index");
+        $data = [
+            'title' => 'Contactpersoon bijwerken',
+            'ContactPersoon' => $contactpersoon,
+            'error' => $error
+        ];
+
+        $this->view('ContactPersoon/update', $data);
     }
 }

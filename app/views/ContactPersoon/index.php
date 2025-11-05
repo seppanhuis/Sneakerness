@@ -5,13 +5,10 @@
     <div class="row mb-3">
         <div class="col-1"></div>
         <div class="col-10">
-            <!-- Titel van de pagina -->
-            <h3><?= $data['title']; ?></h3>
+            <h3><?= htmlspecialchars($data['title']); ?></h3>
 
             <a href="<?= URLROOT; ?>/ContactPersoon/create/" 
-               type="button" 
-               class="btn btn-primary btn-sm mb-3" 
-               role="button">
+               class="btn btn-primary btn-sm mb-3">
                 Nieuwe ContactPersoon
             </a>
 
@@ -48,8 +45,6 @@
                         <th>Emailadres</th>
                         <th>Speciale Status</th>
                         <th>Verkoper Naam</th>
-                        <th>Stand Type</th>
-                        <th>Dagen</th>
                         <th>Koppelingen</th>
                         <th>Acties</th>
                     </tr>
@@ -61,10 +56,10 @@
                                 <td><?= htmlspecialchars($contactpersoon->Naam); ?></td>
                                 <td><?= htmlspecialchars($contactpersoon->Telefoonnummer); ?></td>
                                 <td><?= htmlspecialchars($contactpersoon->Emailadres); ?></td>
-                                <td><?= $contactpersoon->SpecialeStatus ? 'Ja' : 'Nee'; ?></td>
+                                <td>
+                                    <?= isset($contactpersoon->SpecialeStatus) ? ($contactpersoon->SpecialeStatus ? 'Ja' : 'Nee') : 'Nee'; ?>
+                                </td>
                                 <td><?= htmlspecialchars($contactpersoon->VerkoperNaam ?? '-'); ?></td>
-                                <td><?= htmlspecialchars($contactpersoon->StandType ?? '-'); ?></td>
-                                <td><?= htmlspecialchars($contactpersoon->Dagen ?? '-'); ?></td>
                                 <td><?= (int)$contactpersoon->Koppelingen; ?></td>
                                 <td>
                                     <a href="<?= URLROOT; ?>/ContactPersoon/assign/<?= $contactpersoon->Id; ?>" 
@@ -83,6 +78,10 @@
                                             Verwijderen
                                         </button>
                                     <?php endif; ?>
+                                    
+                                    <a href="<?= URLROOT; ?>/ContactPersoon/update/<?= $contactpersoon->Id; ?>" class="btn btn-sm btn-warning">
+                                        Bewerken
+                                    </a>
                                 </td>
                             </tr>
                         <?php endforeach; ?>
