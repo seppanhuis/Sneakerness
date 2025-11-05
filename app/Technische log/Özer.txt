@@ -1,0 +1,100 @@
+2025-09-01T08:45:12.102Z INFO  SYSTEM   Applicatie gestart - Sneakerness CRUD service v1.2.0
+2025-09-01T08:46:03.214Z INFO  API      CREATE /api/sneakers      user=ozer   id=snk_00123   payload={maat:42, merk:"Nike", model:"AirMax"}    status=201 OK   dur=48ms   req_id=aa7f3c
+2025-09-01T08:46:03.217Z DEBUG DB       INSERT sneakers id=snk_00123                                     rows=1   dur=12ms
+2025-09-01T08:47:10.009Z INFO  API      READ   /api/sneakers/snk_00123 user=ozer                              status=200 OK   dur=7ms    req_id=aa7f3d
+2025-09-01T08:48:55.778Z INFO  API      CREATE /api/gebruikers    user=admin  id=usr_0009   payload={naam:"Özer", rol:"beheerder"}    status=201 OK   dur=51ms   req_id=aa7f4a
+2025-09-01T09:02:44.003Z WARN  API      UPDATE /api/sneakers/snk_00123 user=ozer   payload={prijs:95.00}                      status=200 OK   dur=62ms   req_id=aa7f9b
+2025-09-01T09:02:44.006Z DEBUG DB       UPDATE sneakers id=snk_00123 set prijs=95.00                           rows=1   dur=18ms
+2025-09-01T09:15:20.330Z INFO  API      READ   /api/sneakers?maat=42 user=guest                             status=200 OK   dur=34ms   req_id=aa812c
+2025-09-01T09:31:01.112Z ERROR API      DELETE /api/sneakers/snk_99999 user=ozer   reason="niet gevonden"                 status=404 Not Found   dur=9ms    req_id=aa8340
+2025-09-01T09:31:01.115Z DEBUG APP      Validatie fout: sneaker id snk_99999 bestaat niet
+2025-09-01T10:02:45.501Z INFO  API      CREATE /api/bestellingen user=usr_0009 id=ord_1001 payload={artikelen:[snk_00123], totaal:95.00} status=201 OK dur=88ms req_id=aa8a12
+2025-09-01T10:02:45.512Z DEBUG DB       INSERT orders id=ord_1001                                       rows=1   dur=22ms
+2025-09-01T10:03:10.000Z INFO  API      READ   /api/bestellingen/ord_1001 user=usr_0009                      status=200 OK   dur=6ms    req_id=aa8a15
+2025-09-01T11:20:05.450Z WARN  AUTH     Misgelijke login poging user=unknown ip=192.168.1.34            status=401 Unauthorized  dur=5ms  req_id=aa9b01
+2025-09-01T11:45:00.000Z INFO  SCHEDULE Back-up DB gestart                                               dur_est=120s
+2025-09-01T11:47:00.112Z INFO  SCHEDULE Back-up DB voltooid                                             status=OK   dur=130s
+2025-09-01T12:05:33.333Z INFO  API      UPDATE /api/gebruikers/usr_0009 user=admin payload={rol:"klant"}     status=200 OK   dur=45ms   req_id=ab0c55
+2025-09-01T12:06:00.001Z DEBUG CACHE    Cache invalidatie: key="sneakers:list:size=42"                    dur=3ms
+2025-09-01T12:30:14.777Z ERROR API      CREATE /api/sneakers      user=importer payload=malformed_json                 status=400 Bad Request  dur=10ms req_id=ab1d99
+2025-09-01T12:30:14.780Z DEBUG APP      JSON parse error at line 1 column 23
+2025-09-01T13:00:00.000Z INFO  SYSTEM   Onderhoudsvenster gestart - read-only mode
+2025-09-01T13:30:00.000Z INFO  SYSTEM   Onderhoudsvenster beëindigd - normale werking hervat
+2025-09-01T14:12:12.212Z INFO  API      DELETE /api/bestellingen/ord_1001 user=usr_0009 reason="annulering"   status=204 No Content   dur=40ms req_id=ab2f10
+2025-09-01T14:12:12.215Z DEBUG DB       DELETE orders id=ord_1001                                        rows=1   dur=15ms
+2025-09-01T15:45:45.450Z INFO  SYSTEM   Applicatie gestopt - redeploy
+2025-09-01T15:46:00.000Z INFO  SYSTEM   Applicatie gestart - Sneakerness CRUD service v1.2.1
+2025-09-02T08:00:00.100Z INFO  API      CREATE /api/tickets       user=guest   id=tkt_0001 payload={onderwerp:"Retour", prioriteit:"laag"} status=201 OK dur=30ms req_id=ac1a01
+2025-09-02T08:00:00.110Z DEBUG DB       INSERT tickets id=tkt_0001                                       rows=1   dur=10ms
+2025-09-02T08:05:12.450Z INFO  API      READ   /api/tickets/tkt_0001 user=support                              status=200 OK   dur=12ms   req_id=ac1a02
+2025-09-02T08:10:30.000Z WARN  API      UPDATE /api/tickets/tkt_0001 user=support payload={status:"in behandeling"} status=200 OK dur=25ms req_id=ac1a03
+2025-09-02T08:10:30.010Z DEBUG DB       UPDATE tickets id=tkt_0001 set status="in behandeling"               rows=1   dur=8ms
+2025-09-02T08:15:00.500Z INFO  API      CREATE /api/sneakers      user=importer id=snk_00124 payload={maat:38, merk:"Adidas", model:"Ultra"} status=201 OK dur=55ms req_id=ac1b10
+2025-09-02T08:15:00.510Z DEBUG DB       INSERT sneakers id=snk_00124                                     rows=1   dur=14ms
+2025-09-02T08:20:45.777Z ERROR API      DELETE /api/tickets/tkt_99999 user=guest reason="niet gevonden"        status=404 Not Found dur=6ms req_id=ac1b20
+2025-09-02T08:20:45.780Z DEBUG APP      Validatie fout: ticket id tkt_99999 bestaat niet
+2025-09-02T09:00:00.000Z INFO  SCHEDULE Rapportage gegenereerd - dagoverzicht                          dur=120ms
+2025-09-02T09:15:15.150Z INFO  API      UPDATE /api/sneakers/snk_00124 user=importer payload={prijs:120.00} status=200 OK dur=30ms req_id=ac1b30
+2025-09-02T09:15:15.160Z DEBUG DB       UPDATE sneakers id=snk_00124 set prijs=120.00                         rows=1   dur=9ms
+2025-09-02T09:30:30.300Z INFO  API      CREATE /api/tickets       user=usr_0009 id=tkt_0002 payload={onderwerp:"Levering vertraagd", prioriteit:"hoog"} status=201 OK dur=60ms req_id=ac1c01
+2025-09-02T09:30:30.310Z DEBUG DB       INSERT tickets id=tkt_0002                                       rows=1   dur=11ms
+2025-09-02T09:45:45.450Z WARN  AUTH     Verouderde sessie user=guest ip=192.168.1.50                      status=401 Unauthorized dur=3ms req_id=ac1c11
+2025-09-02T10:00:00.000Z INFO  API      READ   /api/sneakers?merk=Adidas user=guest                          status=200 OK   dur=22ms   req_id=ac1c20
+2025-09-02T10:15:15.150Z ERROR API      UPDATE /api/bestellingen/ord_1002 user=usr_0005 reason="externe fout" status=500 Internal Server Error dur=70ms req_id=ac1c30
+2025-09-02T10:15:15.160Z DEBUG APP      Externe betalingsgateway time-out
+2025-09-02T10:30:30.300Z INFO  API      DELETE /api/sneakers/snk_00124 user=admin reason="defect"           status=204 No Content dur=20ms req_id=ac1c40
+2025-09-02T10:30:30.310Z DEBUG DB       DELETE sneakers id=snk_00124                                      rows=1   dur=6ms
+2025-09-02T11:00:00.000Z INFO  SYSTEM   Health-check passed - alle services OK
+2025-09-02T11:05:05.505Z INFO  API      CREATE /api/tickets       user=guest   id=tkt_0003 payload={onderwerp:"Productfout", prioriteit:"medium"} status=201 OK dur=40ms req_id=ac1d01
+2025-09-02T11:05:05.515Z DEBUG DB       INSERT tickets id=tkt_0003                                       rows=1   dur=10ms
+2025-09-02T11:20:20.202Z INFO  API      READ   /api/tickets?status=open user=support                           status=200 OK   dur=25ms   req_id=ac1d10
+2025-09-02T11:30:30.303Z WARN  API      UPDATE /api/tickets/tkt_0002 user=support payload={prioriteit:"kritiek"} status=200 OK dur=35ms req_id=ac1d20
+2025-09-02T11:30:30.313Z DEBUG DB       UPDATE tickets id=tkt_0002 set prioriteit="kritiek"                 rows=1   dur=7ms
+2025-09-02T12:00:00.000Z INFO  SCHEDULE Back-up DB gestart                                               dur_est=140s
+2025-09-02T12:02:20.220Z ERROR DB       Back-up mislukte - onvoldoende ruimte                                 dur=200ms
+2025-09-02T12:05:00.000Z INFO  SCHEDULE Back-up DB opnieuw gestart                                         dur_est=150s
+2025-09-02T12:07:30.330Z INFO  SCHEDULE Back-up DB voltooid                                               status=OK   dur=150s
+2025-09-02T12:30:30.303Z INFO  API      CREATE /api/sneakers      user=importer id=snk_00125 payload={maat:44, merk:"Puma", model:"RS"} status=201 OK dur=45ms req_id=ac1e01
+2025-09-02T12:30:30.313Z DEBUG DB       INSERT sneakers id=snk_00125                                     rows=1   dur=12ms
+2025-09-02T12:45:45.450Z INFO  API      UPDATE /api/sneakers/snk_00125 user=importer payload={kleur:"zwart"} status=200 OK dur=28ms req_id=ac1e11
+2025-09-02T12:45:45.460Z DEBUG DB       UPDATE sneakers id=snk_00125 set kleur="zwart"                       rows=1   dur=5ms
+2025-09-02T13:00:00.000Z INFO  API      CREATE /api/tickets       user=usr_0010 id=tkt_0004 payload={onderwerp:"Garantie", prioriteit:"laag"} status=201 OK dur=35ms req_id=ac1f01
+2025-09-02T13:00:00.010Z DEBUG DB       INSERT tickets id=tkt_0004                                       rows=1   dur=9ms
+2025-09-02T13:15:15.150Z INFO  API      READ   /api/tickets/tkt_0004 user=usr_0010                              status=200 OK   dur=7ms    req_id=ac1f05
+2025-09-02T13:30:30.300Z WARN  APP      Langdurige query detecteert - optimaliseren aanbevolen
+2025-09-02T13:45:45.450Z ERROR API      DELETE /api/tickets/tkt_0003 user=guest reason="onbevoegd"         status=403 Forbidden dur=5ms req_id=ac1f20
+2025-09-02T13:45:45.460Z DEBUG APP      Autorisatie geweigerd voor user=guest op ticket tkt_0003
+2025-09-02T14:00:00.000Z INFO  API      UPDATE /api/tickets/tkt_0004 user=support payload={status:"gesloten"} status=200 OK dur=20ms req_id=ac1f30
+2025-09-02T14:00:00.010Z DEBUG DB       UPDATE tickets id=tkt_0004 set status="gesloten"                    rows=1   dur=6ms
+2025-09-02T14:15:15.150Z INFO  API      CREATE /api/tickets       user=guest   id=tkt_0005 payload={onderwerp:"Coupon probleem", prioriteit:"medium"} status=201 OK dur=33ms req_id=ac2a01
+2025-09-02T14:15:15.160Z DEBUG DB       INSERT tickets id=tkt_0005                                       rows=1   dur=8ms
+2025-09-02T14:30:30.300Z INFO  API      READ   /api/sneakers/snk_00125 user=guest                              status=200 OK   dur=6ms    req_id=ac2a10
+2025-09-02T14:45:45.450Z WARN  API      UPDATE /api/gebruikers/usr_0009 user=admin payload={rol:"beheerder"} status=200 OK dur=40ms req_id=ac2a20
+2025-09-02T14:45:45.460Z DEBUG DB       UPDATE gebruikers id=usr_0009 set rol="beheerder"                   rows=1   dur=7ms
+2025-09-02T15:00:00.000Z INFO  SYSTEM   Autoscaling opgeschakeld - min=2 max=8
+2025-09-02T15:15:15.150Z INFO  API      DELETE /api/sneakers/snk_00123 user=ozer reason="retour"         status=204 No Content dur=18ms req_id=ac2b01
+2025-09-02T15:15:15.160Z DEBUG DB       DELETE sneakers id=snk_00123                                      rows=1   dur=5ms
+2025-09-02T15:30:30.300Z ERROR APP      Corrupt cache entry key="sneakers:detail:snk_00125"               dur=2ms
+2025-09-02T15:45:45.450Z INFO  API      CREATE /api/bestellingen user=usr_0020 id=ord_1002 payload={artikelen:[snk_00125], totaal:120.00} status=201 OK dur=90ms req_id=ac2b10
+2025-09-02T15:45:45.460Z DEBUG DB       INSERT orders id=ord_1002                                       rows=1   dur=20ms
+2025-09-02T16:00:00.000Z WARN  AUTH     Ongebruikelijke activiteit user=usr_0020 ip=10.0.0.5            status=403 Forbidden dur=6ms req_id=ac2b20
+2025-09-02T16:15:15.150Z INFO  API      UPDATE /api/bestellingen/ord_1002 user=usr_0020 payload={status:"betaald"} status=200 OK dur=50ms req_id=ac2b30
+2025-09-02T16:15:15.160Z DEBUG DB       UPDATE orders id=ord_1002 set status="betaald"                      rows=1   dur=10ms
+2025-09-02T16:30:30.300Z INFO  API      CREATE /api/tickets       user=guest   id=tkt_0006 payload={onderwerp:"Retourlabel", prioriteit:"laag"} status=201 OK dur=30ms req_id=ac2c01
+2025-09-02T16:30:30.310Z DEBUG DB       INSERT tickets id=tkt_0006                                       rows=1   dur=9ms
+2025-09-02T16:45:45.450Z INFO  API      READ   /api/tickets?user=guest user=support                           status=200 OK   dur=28ms   req_id=ac2c10
+2025-09-02T17:00:00.000Z ERROR API      DELETE /api/bestellingen/ord_99999 user=usr_0009 reason="niet gevonden" status=404 Not Found dur=10ms req_id=ac2c20
+2025-09-02T17:00:00.010Z DEBUG APP      Validatie fout: bestelling ord_99999 bestaat niet
+2025-09-02T17:15:15.150Z INFO  API      UPDATE /api/tickets/tkt_0005 user=support payload={status:"in behandeling"} status=200 OK dur=22ms req_id=ac2c30
+2025-09-02T17:15:15.160Z DEBUG DB       UPDATE tickets id=tkt_0005 set status="in behandeling"             rows=1   dur=6ms
+2025-09-02T17:30:30.300Z INFO  SYSTEM   Dagelijkse rapportage voltooid - 37 issues gemeld
+2025-09-02T17:45:45.450Z WARN  API      UPDATE /api/sneakers/snk_00125 user=admin payload={prijs:110.00} status=200 OK dur=48ms req_id=ac2d01
+2025-09-02T17:45:45.460Z DEBUG DB       UPDATE sneakers id=snk_00125 set prijs=110.00                         rows=1   dur=12ms
+2025-09-02T18:00:00.000Z INFO  API      DELETE /api/tickets/tkt_0006 user=support reason="duplicaat"     status=204 No Content dur=15ms req_id=ac2d10
+2025-09-02T18:00:00.010Z DEBUG DB       DELETE tickets id=tkt_0006                                      rows=1   dur=4ms
+2025-09-02T18:15:15.150Z INFO  API      CREATE /api/tickets       user=guest   id=tkt_0007 payload={onderwerp:"Account probleem", prioriteit:"hoog"} status=201 OK dur=38ms req_id=ac2d20
+2025-09-02T18:15:15.160Z DEBUG DB       INSERT tickets id=tkt_0007                                       rows=1   dur=10ms
+2025-09-02T18:30:30.300Z ERROR AUTH     Onbevoegd token user=guest ip=203.0.113.5                           status=401 Unauthorized dur=3ms req_id=ac2d30
+2025-09-02T18:45:45.450Z INFO  SYSTEM   Applicatie gestopt - nachtelijke onderhoud
+2025-09-02T19:00:00.000Z INFO  SYSTEM   Applicatie gestart - Sneakerness CRUD service v1.2.2
+2025-09-02T19:05:05.505Z INFO  API      READ   /api/tickets/tkt_0007 user=support                              status=200 OK   dur=9ms    req_id=ac2d40
