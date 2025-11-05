@@ -23,7 +23,6 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // succesvolle login
         $_SESSION['user'] = USERNAME;
         header('Location: dashboard.php');
-        exit;
     } else {
         $error = 'Ongeldige gebruikersnaam of wachtwoord.';
     }   

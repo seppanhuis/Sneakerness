@@ -9,122 +9,95 @@ class Stands extends BaseController
         $this->Stands = $this->model('StandsModel');
     }
 
-    //stuurt alle informatie van de stands naar de view als Stand naar Stand/index
     public function index()
     {
         try {
             $result = $this->Stands->GetAllStands();
-
             $data = [
                 'title' => 'Overzicht Stands',
                 'Stand' => $result
             ];
-
             $this->view('Stands/index', $data);
         } catch (Exception $e) {
             error_log($e->getMessage());
         }
     }
 
-    public function create()
+    public function update($Id)
     {
+        $stand = $this->Stands->GetStandById($Id);
+
+        if (!$stand) {
+            $allStands = $this->Stands->GetAllStands();
+            $data = [
+                'title' => 'Overzicht Stands',
+                'Stand' => $allStands,
+                'message' => 'Deze stand bestaat niet.',
+                'error' => true
+            ];
+            $this->view('Stands/index', $data);
+            return;
+        }
+
         $error = '';
 
-        if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $standType = $_POST['StandType'] ?? '';
             $prijs = $_POST['Prijs'] ?? '';
 
-            // Controleer dat de velden niet leeg zijn
             if ($standType !== '' && $prijs !== '') {
-
-                // Converteer prijs naar float en limiet check
                 $prijsFloat = (float) str_replace(',', '.', $prijs);
                 if ($prijsFloat < 0 || $prijsFloat > 99999999.99) {
                     $error = 'Prijs mag maximaal 99.999.999,99 zijn.';
                 } else {
-                    $data = [
-                        'VerkoperId' => null,           // geen verkoper gekoppeld
+                    $dataUpdate = [
                         'StandType' => trim($standType),
-                        'Prijs' => $prijsFloat,
-                        'VerhuurdStatus' => 0           // standaard Niet Verhuurd
+                        'Prijs' => $prijsFloat
                     ];
 
-                    $result = $this->Stands->CreateStand($data);
+                    $result = $this->Stands->UpdateStandDetails($Id, $dataUpdate);
 
-                    if ($result === 'duplicate_stand') {
-                        $error = 'Deze Stand bestaat al.';
-                    } elseif ($result) {
-                        header("Location:" . URLROOT . "/Stands/index");
-                    } else {
-                        $error = 'Opslaan mislukt.';
-                    }
+                    $allStands = $this->Stands->GetAllStands();
+                    $message = $result ? 'Stand succesvol bijgewerkt.' : 'Bijwerken mislukt.';
+                    $data = [
+                        'title' => 'Overzicht Stands',
+                        'Stand' => $allStands,
+                        'message' => $message,
+                        'error' => !$result
+                    ];
+                    $this->view('Stands/index', $data);
+                    return;
                 }
             } else {
                 $error = 'Vul alle velden in aub.';
             }
         }
 
-        // Data terugsturen naar de view
         $data = [
-            'title' => 'Nieuwe Stand',
-            'StandType' => $_POST['StandType'] ?? '',
-            'Prijs' => $_POST['Prijs'] ?? '',
+            'title' => 'Wijzig Stand',
+            'stand' => $stand,
             'error' => $error
         ];
 
-        $this->view('Stands/create', $data);
+        $this->view('Stands/update', $data);
     }
 
-    public function verhuur($standId)
+    public function delete($Id)
     {
-        $error = '';
-
-        // Controleer geldig standId
-        if (!is_numeric($standId)) {
+        if ($_SERVER['REQUEST_METHOD'] !== 'POST') {
             header("Location:" . URLROOT . "/Stands/index");
-            return;
         }
 
-        // Haal stand op
-        $stand = $this->Stands->GetStandById($standId);
-        if (!$stand || $stand->VerhuurdStatus == 1) {
-            header("Location:" . URLROOT . "/Stands/index");
-            return;
-        }
-
-        // Verwerk POST
-        if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-            $verkoperId = $_POST['VerkoperId'] ?? '';
-
-            if ($verkoperId !== '') {
-                $data = [
-                    'VerhuurdStatus' => 1,
-                    'VerkoperId' => (int)$verkoperId
-                ];
-
-                $result = $this->Stands->UpdateStand($standId, $data);
-
-                if ($result) {
-                    header("Location:" . URLROOT . "/Stands/index");
-                    return;
-                } else {
-                    $error = 'Verhuren mislukt.';
-                }
-            } else {
-                $error = 'Kies een verkoper.';
-            }
-        }
-
-        // Haal alle verkopers op
-        $verkopers = $this->Stands->GetAllVerkopers();
+        $result = $this->Stands->deleteStand($Id);
+        $allStands = $this->Stands->GetAllStands();
 
         $data = [
-            'title' => 'Verhuur Stand',
-            'stand' => $stand,
-            'verkopers' => $verkopers,
-            'error' => $error
+            'title' => 'Overzicht Stands',
+            'Stand' => $allStands,
+            'message' => $result['message'],
+            'error' => !$result['status']
         ];
 
-        $this->view('Stands/verhuur', $data);
+        $this->view('Stands/index', $data);
     }
 }
